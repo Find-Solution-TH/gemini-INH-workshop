@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Office Speed Booster — ABC Company × Gemini</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#F8F9FB;color:#1a1a1a}
+:root{
+  --bg:#F8F9FB;--bg2:#FFFFFF;--bg3:#F0F2F5;
+  --border:#E2E6EF;--border2:#C8CFDD;
+  --text:#1A1A2E;--text2:#4A5568;--text3:#8896A8;
+  --blue:#2563EB;--blue-lt:#EBF2FF;
+  --info-bg:#EBF2FF;--info-border:#BFDBFE;--info-text:#1E40AF;
+  --warn-bg:#FFFBEB;--warn-border:#FDE68A;--warn-text:#92400E;
+  --danger-bg:#FEF2F2;--danger-border:#FECACA;--danger-text:#991B1B;
+  --success-bg:#ECFDF5;--success-border:#A7F3D0;--success-text:#065F46;
+}
+.app{background:var(--bg);min-height:100vh}
+.nav{background:#fff;border-bottom:1px solid var(--border);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.nav-brand{display:flex;align-items:center;gap:8px;cursor:pointer}
+.logo{width:30px;height:30px;background:linear-gradient(135deg,#2563eb,#0ea5e9);border-radius:8px;display:flex;align-items:center;justify-content:center}
+.logo-i{width:13px;height:13px;border:2.5px solid white;border-radius:3px}
+.nav-t{font-size:13px;font-weight:600;color:var(--text)}
+.nctrl{display:flex;align-items:center;gap:8px}
+.nb{background:#fff;border:1px solid var(--border2);border-radius:8px;padding:5px 11px;font-size:11px;color:var(--text2);cursor:pointer;white-space:nowrap;font-family:inherit}
+.nb:hover{border-color:var(--blue);color:var(--blue)}
+.nb:disabled{opacity:.3;cursor:default;pointer-events:none}
+.nb-nxt{background:var(--blue);color:#fff;border-color:var(--blue)}
+.nb-nxt:hover{background:#1d4ed8;color:#fff;border-color:#1d4ed8}
+.nlbl{font-size:12px;color:var(--text2);max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.landing{padding:28px 20px 48px;max-width:960px;margin:0 auto}
+.hbadge{display:inline-block;background:var(--info-bg);color:var(--info-text);font-size:11px;padding:3px 10px;border-radius:999px;margin-bottom:14px;font-weight:600;border:1px solid var(--info-border)}
+.hero h1{font-size:26px;font-weight:700;color:var(--text);margin-bottom:6px}
+.hero .sub{font-size:14px;color:var(--blue);font-weight:600;margin-bottom:10px}
+.hero p{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:20px}
+.transform-row{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:center;background:#fff;border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:24px}
+.tcol{text-align:center}
+.tcol-lbl{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.tstat{display:flex;justify-content:center;gap:14px}
+.tstat-item{text-align:center}
+.tstat-num{font-size:22px;font-weight:800;line-height:1}
+.tstat-num.before{color:var(--danger-text)}
+.tstat-num.after{color:var(--success-text)}
+.tstat-cap{font-size:10px;color:var(--text3);margin-top:3px}
+.tarrow{font-size:22px;color:var(--blue);font-weight:700}
+.prob-box{background:var(--danger-bg);border:1px solid var(--danger-border);border-radius:12px;padding:14px 16px;margin-bottom:28px}
+.prob-ttl{font-size:10px;font-weight:700;color:var(--danger-text);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.prob-desc{font-size:13px;color:var(--danger-text);line-height:1.6;margin-bottom:10px}
+.pills{display:flex;flex-wrap:wrap;gap:6px}
+.pill{background:#fff;border:1px solid var(--danger-border);border-radius:999px;padding:3px 10px;font-size:11px;color:var(--danger-text);font-weight:500}
+.section{margin-bottom:26px}
+.sechdr{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.secbar{width:3px;height:16px;border-radius:2px}
+.seclbl{font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.08em}
+.lgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:10px}
+.lc{background:#fff;border:1px solid var(--border);border-radius:12px;padding:13px;cursor:pointer;transition:all .15s;position:relative;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.lc:hover{border-color:var(--blue);box-shadow:0 2px 8px rgba(37,99,235,.12);transform:translateY(-1px)}
+.lc.vis::after{content:'';position:absolute;top:9px;right:9px;width:7px;height:7px;border-radius:50%;background:#22c55e}
+.lc.demo-lab{border:1.5px solid var(--info-border);background:var(--info-bg)}
+.lc.demo-lab:hover{border-color:var(--blue)}
+.lcn{font-size:10px;color:var(--text3);margin-bottom:5px;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.lc.demo-lab .lcn{color:var(--info-text)}
+.lct{font-size:13px;font-weight:600;color:var(--text);line-height:1.3;margin-bottom:3px}
+.lcd{font-size:11px;color:var(--text2)}
+.lview{display:none}
+.llayout{display:grid;grid-template-columns:1fr 300px;min-height:560px}
+.lmain{padding:22px 20px;border-right:1px solid var(--border);background:#fff}
+.lhdr{margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.lbadge{display:inline-flex;background:var(--bg3);border:1px solid var(--border);border-radius:999px;padding:3px 10px;font-size:11px;color:var(--text2);margin-bottom:8px;font-weight:500}
+.ltitle{font-size:20px;font-weight:700;color:var(--text);margin-bottom:6px}
+.lobj{font-size:13px;color:var(--text2);line-height:1.6}
+.ptag{display:flex;align-items:flex-start;gap:7px;background:var(--danger-bg);border:1px solid var(--danger-border);border-radius:8px;padding:8px 12px;margin-bottom:18px}
+.ptag-dot{width:6px;height:6px;border-radius:50%;background:var(--danger-text);flex-shrink:0;margin-top:4px}
+.ptag-txt{font-size:12px;color:var(--danger-text);line-height:1.5}
+.fw-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+.fw-pill{border-radius:8px;padding:8px 12px;display:flex;flex-direction:column;gap:2px;flex:1;min-width:80px}
+.fw-letter{font-size:18px;font-weight:700;line-height:1}
+.fw-word{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.fw-desc{font-size:10px;line-height:1.4;margin-top:2px}
+.sh{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
+.steps{display:flex;flex-direction:column;gap:9px}
+.step{display:flex;gap:11px;padding:11px;background:var(--bg);border-radius:8px;border:1px solid var(--border)}
+.snum{width:22px;height:22px;border-radius:50%;background:#fff;border:1.5px solid var(--border2);font-size:11px;font-weight:700;color:var(--text2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.stxt{font-size:13px;color:var(--text);line-height:1.5;padding-top:2px}
+.product-card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:14px}
+.product-name{font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px}
+.stat-row{display:flex;gap:8px;flex-wrap:wrap}
+.stat-chip{flex:1;min-width:130px;background:#fff;border:1px solid var(--border);border-radius:8px;padding:8px 10px}
+.stat-chip-lbl{font-size:10px;color:var(--text3);margin-bottom:4px}
+.stat-chip-val{font-size:14px;font-weight:700;color:var(--text)}
+.stat-chip-val .arrow{color:var(--blue);margin:0 4px}
+.stat-chip-val .from{color:var(--danger-text)}
+.stat-chip-val .to{color:var(--success-text)}
+.seq-block{background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:14px}
+.seq-row{display:flex;align-items:flex-start;border-bottom:1px solid var(--border)}
+.seq-row:last-child{border-bottom:none}
+.seq-ts{font-size:10px;font-family:monospace;color:var(--text3);padding:9px 10px;min-width:50px;flex-shrink:0;border-right:1px solid var(--border);background:var(--bg)}
+.seq-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin:10px 8px 0 10px}
+.seq-info{flex:1;padding:9px 10px 9px 0}
+.seq-shot{font-size:11px;font-weight:600;color:var(--text);margin-bottom:2px}
+.seq-cam{font-size:10px;color:var(--text3);font-style:italic}
+.plat-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.plat{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:6px 10px;flex:1}
+.plat-l{font-size:9px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px}
+.plat-v{font-size:11px;color:var(--text);font-weight:500}
+.sb{padding:18px 14px;background:var(--bg3);display:flex;flex-direction:column;gap:10px;overflow-y:auto;max-height:calc(100vh - 60px)}
+.sblbl{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:2px}
+.upload-box{background:#fff;border:1px solid var(--border2);border-radius:8px;padding:11px}
+.upload-label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.upload-list{display:flex;flex-direction:column;gap:5px}
+.upload-item{display:flex;align-items:center;gap:7px;padding:6px 8px;background:var(--bg3);border-radius:6px;border:1px solid var(--border)}
+.upload-item-dot{width:5px;height:5px;border-radius:50%;background:var(--text3);flex-shrink:0}
+.upload-item-name{font-size:11px;color:var(--text2)}
+.pbox{background:#fff;border:1px solid var(--border);border-radius:8px;padding:11px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.pbox-demo{background:var(--info-bg);border:1.5px solid var(--info-border);border-radius:8px;padding:11px}
+.pstep{display:inline-block;font-size:9px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;background:var(--bg3);border:1px solid var(--border);border-radius:999px;padding:2px 8px;margin-bottom:6px}
+.pstep-demo{background:var(--blue);color:#fff;border-color:var(--blue)}
+.pstep-w{background:var(--warn-bg);border-color:var(--warn-border);color:var(--warn-text)}
+.plbl{font-size:11px;font-weight:600;color:var(--text);margin-bottom:7px;line-height:1.4}
+.ptxt{font-family:monospace;font-size:11px;color:var(--text2);line-height:1.7;white-space:pre-wrap;margin-bottom:9px;background:var(--bg);border-radius:6px;padding:8px;border:1px solid var(--border)}
+.ptxt-demo{font-family:monospace;font-size:13px;font-weight:600;color:var(--info-text);line-height:1.8;white-space:pre-wrap;margin-bottom:9px;background:#fff;border-radius:6px;padding:10px;border:1px solid var(--info-border)}
+.bcopy{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:6px;padding:6px;font-size:11px;color:var(--text2);cursor:pointer;font-family:inherit;font-weight:500;transition:all .15s}
+.bcopy:hover{background:var(--blue);color:#fff;border-color:var(--blue)}
+.bcopy.cp{background:#22c55e;color:#fff;border-color:#22c55e}
+.bcopy-demo{width:100%;background:var(--blue);border:none;border-radius:6px;padding:8px;font-size:12px;font-weight:600;color:#fff;cursor:pointer;font-family:inherit;transition:all .15s}
+.bcopy-demo:hover{background:#1d4ed8}
+.bcopy-demo.cp{background:#22c55e}
+.tipbox{background:var(--info-bg);border:1px solid var(--info-border);border-radius:8px;padding:9px 12px}
+.tiplbl{font-size:10px;font-weight:700;color:var(--info-text);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px}
+.tiptxt{font-size:11px;color:var(--info-text);line-height:1.5}
+.divlbl{font-size:10px;font-weight:700;color:var(--warn-text);text-transform:uppercase;letter-spacing:.1em;background:var(--warn-bg);border:1px solid var(--warn-border);border-radius:6px;padding:5px 10px;text-align:center;margin:2px 0}
+.toast{position:fixed;bottom:20px;right:20px;background:#fff;border:1px solid var(--border2);border-radius:8px;padding:9px 14px;font-size:12px;font-weight:600;color:#22c55e;z-index:999;transform:translateY(80px);transition:transform .2s;pointer-events:none;box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.toast.show{transform:translateY(0)}
+@media(max-width:620px){.llayout{grid-template-columns:1fr}.sb{max-height:none;border-top:1px solid var(--border)}.nlbl{display:none}.lgrid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}.transform-row{grid-template-columns:1fr}.tarrow{transform:rotate(90deg)}}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="nav">
+  <div class="nav-brand" onclick="goHome()">
+    <div class="logo"><div class="logo-i"></div></div>
+    <span class="nav-t">ABC Company × Gemini</span>
+  </div>
+  <div class="nctrl" id="nc" style="display:none">
+    <button class="nb" id="np" onclick="navL(-1)">← Prev</button>
+    <span class="nlbl" id="nl"></span>
+    <button class="nb nb-nxt" id="nn">Next →</button>
+  </div>
+</div>
+
+<div id="landing" class="landing">
+  <div class="hero">
+    <div class="hbadge">Workshop 1 · The Speed of Insight</div>
+    <h1>ABC Company — Prompt Library</h1>
+    <div class="sub">Office Speed Booster — ลดล็อกงานรูทีนสำนักงาน ติดจรวดสปีดองค์กรด้วย AI</div>
+    <p>ทุก Lab มุ่งย่นระยะเวลาจาก "ข้อมูลดิบ" สู่ "การตัดสินใจ" (Data-to-Decision Pipeline) ให้เร็วขึ้นแบบก้าวกระโดด</p>
+  </div>
+
+  <div class="transform-row">
+    <div class="tcol">
+      <div class="tcol-lbl">วันนี้ — ก่อนใช้ Gemini</div>
+      <div class="tstat">
+        <div class="tstat-item"><div class="tstat-num before">80%</div><div class="tstat-cap">เตรียมข้อมูล</div></div>
+        <div class="tstat-item"><div class="tstat-num before">20%</div><div class="tstat-cap">คิดเชิงกลยุทธ์</div></div>
+      </div>
+    </div>
+    <div class="tarrow">→</div>
+    <div class="tcol">
+      <div class="tcol-lbl">เป้าหมาย — หลังใช้ Gemini</div>
+      <div class="tstat">
+        <div class="tstat-item"><div class="tstat-num after">10%</div><div class="tstat-cap">เตรียมข้อมูล</div></div>
+        <div class="tstat-item"><div class="tstat-num after">90%</div><div class="tstat-cap">คิดเชิงกลยุทธ์</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="prob-box">
+    <div class="prob-ttl">ปัญหาหลักที่ทุก Lab แก้ร่วมกัน</div>
+    <div class="prob-desc">ในแต่ละแผนกของ <strong>บริษัท ABC</strong> มีข้อมูลกระจัดกระจายอยู่ในแต่ละแผนก แต่กว่าจะรวบรวม คีย์ตัวเลข ตรวจสอบ และจัดทำรายงานเสร็จ — ตลาดก็เปลี่ยนไปแล้ว ผู้บริหารต้องรอรายงาน ไม่ว่าจะเป็นรายแผนกหรือภาพรวมทั้งองค์กร เป็นเวลาสัปดาห์กว่าจะเห็นภาพรวมเพื่อตัดสินใจ</div>
+    <div class="pills">
+      <span class="pill">เตรียมข้อมูลกิน 80% ของเวลาทำงาน</span>
+      <span class="pill">รอรายงานทั้งรายแผนกและภาพรวมเป็นสัปดาห์</span>
+      <span class="pill">ข้อมูลกระจัดกระจายในแต่ละแผนก</span>
+      <span class="pill">ตัดสินใจช้ากว่าตลาดเปลี่ยน</span>
+    </div>
+  </div>
+  <div id="cur"></div>
+</div>
+
+<div id="ldetail" class="lview">
+  <div class="llayout">
+    <div class="lmain">
+      <div class="lhdr">
+        <div class="lbadge" id="dbadge"></div>
+        <div class="ltitle" id="dtitle"></div>
+        <div class="lobj" id="dobj"></div>
+      </div>
+      <div id="dfw" style="display:none"><div class="fw-row" id="dfw-pills"></div></div>
+      <div class="ptag"><div class="ptag-dot"></div><div class="ptag-txt" id="dprob"></div></div>
+      <div class="sh">Workflow steps</div>
+      <div class="steps" id="dsteps"></div>
+      <div id="dextra"></div>
+    </div>
+    <div class="sb" id="dsb"></div>
+  </div>
+</div>
+<div class="toast" id="toast">Copied!</div>
+</div>
+
+<script>
+const D=[
+  {grp:"Live Demo",color:"#2563EB",labs:[
+    {id:"l0",num:"Lab 0",title:"Live Demo",tag:"Demo",isDemo:true,desc:"ทดสอบ Gemini ครั้งแรก — ใช้เลย",
+     obj:"สัมผัส Gemini ครั้งแรกด้วย prompt ง่ายๆ ที่เกี่ยวกับงานของตัวเอง ก่อนเริ่ม Lab จริง",
+     prob:"ผู้เข้าอบรมหลายคนยังไม่เคยใช้ Gemini มาก่อน — Lab 0 ช่วยให้คุ้นเคยอินเทอร์เฟซก่อนเริ่ม Lab จริง",
+     steps:["เปิด gemini.google.com บนเบราว์เซอร์","Copy prompt ด้านล่าง แล้ว paste ใน Gemini","เปลี่ยน [ประเภท] เป็นแผนกของคุณ เช่น บัญชี, การเงิน","กด Enter และสังเกตว่า Gemini ตอบอย่างไร"],
+     tip:"ไม่มีคำตอบผิดหรือถูก — Lab 0 มีไว้เพื่อให้คุ้นเคยกับ Gemini ก่อนเริ่ม Lab จริง",
+     prompts:[{step:"Prompt — Copy แล้วใช้เลย",lbl:"Prompt เปิดตัว",isDemo:true,txt:"สวัสดี ฉันเป็นเจ้าของธุรกิจ [ประเภท] ช่วยแนะนำ 3 วิธีที่ AI จะช่วยธุรกิจฉันได้"}]}
+  ]},
+  {grp:"Prompt Engineering",color:"#2563EB",labs:[
+    {id:"l1",num:"Lab 1",title:"4 RTCC Framework",tag:"Foundations",desc:"วิเคราะห์ทำไมเวลาหมดไปกับการเตรียมข้อมูล",
+     obj:"ใช้ Role Task Context Constraint วิเคราะห์ว่าทำไมทีมการเงินใช้เวลา 80% เตรียมข้อมูล เหลือคิดวิเคราะห์แค่ 20%",
+     prob:"ทีมการเงินบริษัท ABC ใช้เวลา 80% ของวันทำงานไปกับการเตรียมข้อมูล จัดฟอร์แมต และสรุปเอกสาร เหลือเวลาคิดเชิงกลยุทธ์เพียง 20%",
+     steps:["R — Role: กำหนดว่าใครวิเคราะห์เรื่องนี้ได้ดีที่สุด","T — Task: ระบุให้ชัดว่าต้องการคำตอบอะไร","C — Context: ให้ข้อมูลโครงสร้างองค์กรและปัญหาให้ครบ","C — Constraint: ล็อกรูปแบบและขนาดของคำตอบ"],
+     tip:"ยิ่ง Constraint ชัด output ยิ่งนำไปใช้ได้ทันที",
+     prompts:[{step:"Prompt เดียว",lbl:"RTCC · วิเคราะห์ทำไมเวลาหมดไปกับการเตรียมข้อมูล",txt:"Role: CFO Advisor ผู้เชี่ยวชาญด้าน Finance Transformation และ Data-to-Decision Pipeline\n\nTask: วิเคราะห์ว่าทำไมทีมการเงินกลางของบริษัท ABC ใช้เวลา 80% ของวันทำงานไปกับการเตรียมข้อมูลและจัดทำรายงาน เหลือเวลาคิดวิเคราะห์เชิงกลยุทธ์เพียง 20%\n\nContext: บริษัท ABC มีหลายแผนกหลัก (การเงิน, บัญชี, ขาย, การตลาด, ปฏิบัติการ) ส่งข้อมูลการเงินมาเป็น Excel/PDF รูปแบบไม่ตรงกันทุกเดือน ทีมการเงินกลางต้องคีย์ข้อมูลและตรวจสอบด้วยมือทั้งหมด ก่อนสรุปส่งผู้บริหาร\n\nConstraint: ตอบเป็น bullet points ไม่เกิน 200 คำ ระบุสาเหตุ 3 ข้อ พร้อม quick win ที่ทำได้ภายใน 30 วัน 3 ข้อ"}]},
+    {id:"l21",num:"Lab 2.1",title:"PTFC Framework",tag:"Foundations",desc:"Google Framework — Executive Summary",
+     obj:"ใช้ PTFC Framework ของ Google สร้าง executive summary ที่มี format ชัดเจน ลดเวลาที่ผู้บริหารต้องรอ",
+     prob:"ผู้บริหารต้องรอรายงานสรุปงบเป็นสัปดาห์ กว่าจะเห็นภาพรวม ทุกแผนกเพื่อตัดสินใจ",
+     fw:[{letter:"P",word:"Persona",desc:"กำหนดบทบาทของ AI",bg:"#EBF2FF",color:"#1E40AF"},{letter:"T",word:"Task",desc:"ระบุงานที่ต้องการ",bg:"#ECFDF5",color:"#065F46"},{letter:"F",word:"Format",desc:"ระบุรูปแบบ output",bg:"#FFFBEB",color:"#92400E"},{letter:"C",word:"Context",desc:"ให้ข้อมูลพื้นฐาน",bg:"#FEF2F2",color:"#991B1B"}],
+     steps:["P — Persona: ระบุว่า AI ควรรับบทบาทเป็นผู้เชี่ยวชาญด้านใด","T — Task: ระบุงานที่ต้องการ ให้ชัดและวัดผลได้","F — Format: กำหนดรูปแบบ output ล่วงหน้า เช่น ตาราง KPI + insight + action","C — Context: ให้ข้อมูลพื้นฐานที่จำเป็น — โครงสร้างองค์กร ข้อจำกัดเวลา"],
+     tip:"PTFC ต่างจาก RTCC ตรง Format — กำหนด format ล่วงหน้าทำให้ผู้บริหารอ่านแล้วตัดสินใจได้ทันที ไม่ต้องถามซ้ำ",
+     prompts:[{step:"Prompt เดียว",lbl:"PTFC · สร้าง Executive Summary จากข้อมูล ทุกแผนก",txt:"Persona: คุณคือ CFO ของบริษัท ABC ที่ต้องนำเสนอสรุปผลประกอบการให้บอร์ดบริหารทุกเดือน\n\nTask: สร้าง executive summary จากข้อมูลดิบของ ทุกแผนก ที่บอร์ดอ่านแล้วตัดสินใจได้ทันทีโดยไม่ต้องถามซ้ำ\n\nFormat: ตอบใน 3 ส่วน:\nส่วนที่ 1 — ตารางเทียบ KPI ทุกแผนก (Revenue / Margin / Cashflow) 5 แถว\nส่วนที่ 2 — Insight 3 ข้อที่ผู้บริหารต้องระวังเป็นพิเศษ\nส่วนที่ 3 — Action ที่แนะนำให้ตัดสินใจ 3 ข้อ พร้อมเหตุผลสั้นๆ\n\nContext: บริษัท ABC ปิดงบทุกสิ้นเดือน บอร์ดบริหารมีเวลาอ่านก่อนประชุมแค่ 1 หน้ากระดาษ ต้องการเห็นภาพรวมเร็วที่สุด"}]},
+    {id:"l22",num:"Lab 2.2",title:"TCREI Framework",tag:"Foundations",desc:"Memo เปลี่ยนกระบวนการปิดงบ",
+     obj:"ใช้ TCR สร้าง memo แจ้งกระบวนการปิดงบใหม่ก่อน แล้วค่อย Evaluate และ Iterate ให้ทีมประจำแผนกเข้าใจง่ายที่สุด",
+     prob:"นโยบายและกระบวนการเปลี่ยนบ่อย ทีมประจำแผนกตามไม่ทัน ทำให้ยิ่งช้าและผิดพลาดมากขึ้น",
+     steps:["T — Task: กำหนดว่าต้องการ memo แบบไหน","C — Context: ระบุว่าทีมประจำแผนกกังวลเรื่องอะไร","R — References: ให้ตัวอย่าง memo ที่ดีและไม่ดีเป็น benchmark","— ส่ง prompt และรับผลลัพธ์ก่อน —","E — Evaluate: ตรวจสอบว่า memo ลดความสับสนได้จริงไหม","I — Iterate: แก้ไข prompt และ generate ใหม่จนพอใจ"],
+     tip:"TCREI ไม่ใช่ prompt เดียวจบ — TCR คือการสร้าง, EI คือการแก้ไข ต้องทำครบทั้งสองช่วง",
+     prompts:[
+      {step:"ช่วงที่ 1 — ส่ง TCR ก่อน",lbl:"T·C·R · สร้าง memo กระบวนการปิดงบใหม่",txt:"Task: เขียน memo แจ้งกระบวนการปิดงบใหม่ที่ใช้ Gemini ช่วยสรุปข้อมูล ให้ทีมในแต่ละแผนกเข้าใจและทำตามได้ทันที ความยาว 150-200 คำ\n\nContext: ทีมประจำแผนกคุ้นเคยกับกระบวนการเดิม คือส่ง Excel มาแล้วรอทีมกลางคีย์ข้อมูลเอง การเปลี่ยนแปลงทำให้กังวลว่าจะยุ่งยากขึ้นหรือถูกแทนที่\n\nReferences:\n- memo ดี: \"ระบบใหม่ไม่ได้เพิ่มงานให้คุณ — แค่เปลี่ยนวิธีส่งไฟล์เป็น format เดียวกัน ทีมกลางจะประมวลผลให้เร็วขึ้น 5 เท่า\"\n- memo ไม่ดี: \"ตั้งแต่เดือนหน้า ทุกแผนกต้องส่งข้อมูลตาม format ใหม่ที่แนบมา\""},
+      {step:"ช่วงที่ 2 — หลังได้ผลแล้ว",isDivider:true,lbl:"E · ประเมิน memo ที่ได้",txt:"ประเมิน memo ที่เพิ่งสร้างโดยตอบ:\n1. ทีมประจำแผนกอ่านแล้วเข้าใจว่าต้องทำอะไรต่างจากเดิมไหม?\n2. memo ลดความกังวลเรื่อง \"งานเพิ่ม\" หรือ \"ถูกแทนที่\" ได้จริงหรือยัง?\n3. มีจุดไหนที่ฟังดูเป็นคำสั่งมากกว่าการอธิบายประโยชน์?\n\nสรุป: ผ่านหรือต้องปรับ และต้องปรับจุดไหน"},
+      {step:"ช่วงที่ 2 — หลัง Evaluate แล้ว",lbl:"I · Iterate — เขียนใหม่จากข้อเสนอแนะ",txt:"จากการประเมินที่ผ่านมา ให้เขียน memo ใหม่โดยแก้ทุกจุดที่ระบุ เน้นประโยชน์ที่ทีมประจำแผนกจะได้รับมากกว่าการสั่งให้ทำตาม และบอกว่า version ใหม่ต่างจาก version แรกอย่างไร"}
+     ]}
+  ]},
+  {grp:"Advanced Prompt Techniques",color:"#6d28d9",labs:[
+    {id:"l31",num:"Lab 3.1",title:"Chain of Thought",tag:"Advanced",desc:"หา root cause ทำไม Data-to-Decision ช้า",
+     obj:"ให้ Gemini reasoning ทีละขั้นเพื่อหาสาเหตุที่แท้จริงว่าทำไม Data-to-Decision Pipeline ของกรุ๊ปช้า",
+     prob:"\"ข้อมูลท่วมตัวจนขยับตัวไม่ทัน\" — อาจมีสาเหตุซ้อนกันหลายชั้น ต้องการ reasoning ลึกกว่า bullet points ธรรมดา",
+     steps:["ระบุปัญหาให้ครบทุกมิติ","เพิ่มคำสั่ง 'คิดทีละขั้นตอน'","ให้แสดง hypothesis และ assumption แต่ละข้อ","สรุป root cause จริง ไม่ใช่แค่ symptom"],
+     tip:"CoT ดีมากเมื่อปัญหามีหลายชั้น — ช่วยให้ AI ไม่หยุดแค่คำตอบผิวเผิน",
+     prompts:[{step:"Prompt เดียว",lbl:"CoT · หา root cause ว่าทำไม Data-to-Decision ช้า",txt:"บริษัท ABC มีปัญหาที่ยังไม่เข้าใจชัดเจน: กว่าข้อมูลจาก ทุกแผนกจะถูกรวมเป็นภาพเดียวที่ผู้บริหารใช้ตัดสินใจได้ ใช้เวลาเป็นสัปดาห์ ทั้งที่แต่ละบริษัทมีระบบ ERP ของตัวเอง\n\nกรุณาคิดทีละขั้นตอนอย่างละเอียด:\n1. ตั้ง hypothesis สาเหตุที่เป็นไปได้ทั้งหมด (อย่างน้อย 5 ข้อ)\n2. วิเคราะห์แต่ละ hypothesis — น่าจะจริงแค่ไหน และอะไรทำให้คิดเช่นนั้น\n3. ระบุว่า hypothesis ใดเป็น root cause จริง และอันใดเป็นแค่ symptom\n4. สรุป 1-2 root cause หลัก และอธิบายว่าถ้าแก้ตรงจุดนี้จะย่นเวลา Data-to-Decision ได้อย่างไร"}]},
+    {id:"l32",num:"Lab 3.2",title:"Tree of Thoughts",tag:"Advanced",desc:"3 ผู้เชี่ยวชาญหาวิธีย่นเวลา",
+     obj:"ให้ 3 ผู้เชี่ยวชาญมองปัญหาความเร็วของข้อมูลจากมุมต่างกัน แล้ว synthesize เป็นแผน transformation จริง",
+     prob:"ต้องการ solution รอบด้าน — เทคโนโลยี กระบวนการ และคนต้องสอดคล้องกัน",
+     steps:["Expert 1: CFO — มองจาก finance process และ governance","Expert 2: IT Director — มองจาก system integration","Expert 3: Change Management Specialist — มองจากมุมคน","ให้ debate แล้วสรุปแผน 3 เดือน"],
+     tip:"ToT ช่วยเปิดมุมที่คิดเองไม่ถึง — Expert ที่ไม่คาดคิดมักให้คำตอบที่ดีที่สุด",
+     prompts:[{step:"Prompt เดียว",lbl:"ToT · 3 ผู้เชี่ยวชาญวางแผนย่นเวลา Data-to-Decision",txt:"บริษัท ABC ต้องการย่นเวลาจาก \"ข้อมูลดิบ\" สู่ \"การตัดสินใจ\" ให้เร็วขึ้น จากเดิมที่ผู้บริหารต้องรอรายงานเป็นสัปดาห์\n\nให้ผู้เชี่ยวชาญ 3 คนวิเคราะห์และเสนอแนวทาง:\n\nExpert 1 (CFO): มองจาก finance process และ governance — กระบวนการตรวจสอบใดที่จำเป็นจริง และอันใดทำซ้ำซ้อนโดยไม่จำเป็น\n\nExpert 2 (IT Director): มองจาก system integration — ทำอย่างไรให้ข้อมูลจาก ระบบของแต่ละแผนก เชื่อมกันได้เร็วขึ้นโดยไม่ต้องเปลี่ยนระบบทั้งหมด\n\nExpert 3 (Change Management Specialist): มองจากมุมคน — ทำอย่างไรให้ทีมประจำแผนกยอมรับกระบวนการใหม่โดยไม่รู้สึกว่าถูกเพิ่มงานหรือถูกแทนที่\n\nให้ทั้ง 3 คน debate ข้อดีข้อเสียของกันและกัน แล้วสรุปเป็น 1 แผนที่ดีที่สุด พร้อมแผนดำเนินการ 3 เดือน"}]},
+    {id:"l33",num:"Lab 3.3",title:"Self-Correction",tag:"Advanced",desc:"ตรวจแผน Speed Transformation",
+     obj:"ให้ Gemini เขียนแผนย่นเวลา Data-to-Decision แล้วตรวจจุดอ่อนเองก่อนเสนอผู้บริหาร",
+     prob:"แผนที่ไม่ได้ตรวจสอบอาจดูดีในกระดาษ แต่ทำไม่ได้จริงในทางปฏิบัติ",
+     steps:["ขอ Gemini เขียนแผนก่อน","ให้ AI วิจารณ์งานตัวเองว่ามีจุดอ่อนอะไร","ให้ AI แก้ไขตามจุดอ่อนที่ระบุ"],
+     tip:"Self-correction ดีมากกับงาน strategic planning — ช่วยจับ assumption ผิดก่อนเสนอผู้บริหาร",
+     prompts:[
+      {step:"Step 1",lbl:"เขียนแผน Speed Transformation Plan",txt:"เขียนแผน 90 วันสำหรับบริษัท ABC เพื่อย่นเวลาจาก \"ข้อมูลดิบ\" สู่ \"การตัดสินใจ\" จากปัจจุบันที่ใช้เวลาเป็นสัปดาห์ ให้เหลือไม่เกิน 2-3 วัน\n\nโจทย์: ทีมการเงินยังต้องคีย์ข้อมูลจาก ทุกแผนกด้วยมือทุกเดือน\nแผนต้องมี: เป้าหมายที่วัดผลได้ / 3 milestone หลัก / risk ที่ต้องระวัง\nความยาวไม่เกิน 250 คำ"},
+      {step:"Step 2 — หลังได้ผลแล้ว",isDivider:true,lbl:"ให้ AI วิจารณ์จุดอ่อนในแผน",txt:"ทบทวนแผนที่เพิ่งเขียน และระบุจุดอ่อนอย่างน้อย 3 ข้อ:\n- milestone ที่ฟังดูดีแต่ทำไม่ได้จริงในกรอบเวลา 90 วัน\n- ความเสี่ยงที่ยังไม่ได้พูดถึง เช่น แรงต่อต้านจากทีมประจำแผนก\n- สิ่งที่ขาดหายไปที่ทำให้แผนนี้ไม่ต่างจาก IT project ทั่วไปที่เคยล้มเหลว"},
+      {step:"Step 3",lbl:"เขียนแผนเวอร์ชันที่แก้ไขแล้ว",txt:"เขียนแผนเวอร์ชันใหม่ที่แก้ไขจุดอ่อนทุกข้อที่ระบุไว้ ความยาวเท่าเดิม และระบุสั้นๆ ว่า version ใหม่ต่างจาก version แรกอย่างไร"}
+     ]},
+    {id:"l34",num:"Lab 3.4",title:"Chain of Density",tag:"Advanced",desc:"บีบ Executive Brief สั้นที่สุด",
+     obj:"สร้าง executive brief สถานการณ์การเงินกรุ๊ปที่เข้มข้นและอ่านได้ใน 30 วินาที สำหรับผู้บริหารที่มีเวลาน้อย",
+     prob:"ผู้บริหารไม่มีเวลาอ่านรายงานยาว ต้องการสรุปที่สั้นที่สุดแต่ไม่ขาดข้อมูลสำคัญ",
+     steps:["เขียน executive brief 100 คำ เวอร์ชันแรก","ระบุ 5 fact สำคัญที่ขาดหายไป","เขียนใหม่ความยาวเท่าเดิม ใส่ข้อมูลที่ขาดเข้าไป","ทำซ้ำ 3-5 รอบจนได้ brief ที่เข้มข้นที่สุด"],
+     tip:"CoD เหมาะมากกับ executive brief — บีบข้อมูลสำคัญให้อยู่ใน 100 คำที่อ่านได้ในเครื่องบินหรือรถ",
+     prompts:[
+      {step:"Step 1 — Draft แรก",lbl:"เขียน Executive Brief 100 คำ",txt:"เขียน executive brief สถานการณ์การเงินของบริษัท ABC ความยาวพอดี 100 คำ\n\nเป้าหมาย: ผู้บริหารที่มีเวลาอ่านแค่ 30 วินาที ต้องเข้าใจภาพรวมและรู้ว่าต้องตัดสินใจอะไร\nTone: ตรงประเด็น เป็นทางการ ไม่ใช้ jargon ทางบัญชีที่ไม่จำเป็น"},
+      {step:"Step 2 — เพิ่มความเข้มข้น",isDivider:true,lbl:"หา 5 fact ที่ขาด แล้วเขียนใหม่ 100 คำ",txt:"ระบุ 5 ข้อมูลสำคัญที่ขาดหายไปจาก brief ข้างต้น ซึ่งผู้บริหารควรรู้ก่อนตัดสินใจ แล้วเขียน brief ใหม่ความยาวพอดี 100 คำ โดยนำทั้ง 5 ข้อนั้นใส่เข้าไปให้ครบ"},
+      {step:"Step 3-5",lbl:"ทำซ้ำอีก 3 รอบจนเข้มข้นที่สุด",txt:"ทำซ้ำขั้นตอนเดิม — ระบุ 5 ข้อมูลที่ยังขาด แล้วเขียนใหม่ 100 คำ — อีก 3 รอบ จนได้ brief ที่เข้มข้นที่สุดโดยไม่เกิน 100 คำ แสดงทุก version เรียงกัน"}
+     ]}
+  ]},
+  {grp:"Reasoning & Research",color:"#059669",labs:[
+    {id:"l41",num:"Lab 4.1",title:"Deep Research",tag:"Research",desc:"ค้น Finance Transformation Benchmark",
+     obj:"ใช้ Search Grounding หาหลักฐานว่าองค์กรอื่นย่นเวลา Data-to-Decision ได้อย่างไร พร้อม citation",
+     prob:"ทีมการเงินไม่รู้ว่า benchmark อุตสาหกรรมเรื่องความเร็วในการปิดงบและตัดสินใจอยู่ที่ระดับไหน",
+     steps:["เปิด Search grounding ใน Gemini Advanced","ถาม best practice เรื่อง Finance Transformation","ขอ citation ทุก claim","นำข้อมูลมาเชื่อมกับสถานการณ์ของบริษัท ABC"],
+     tip:"ขอ citation ทุกครั้ง — ข้อมูลไม่มี source ใช้เสนอผู้บริหารระดับสูงไม่ได้",
+     prompts:[{step:"Prompt เดียว",lbl:"Research · Finance Transformation และ Data-to-Decision benchmark",txt:"Research หัวข้อต่อไปนี้เพื่อสนับสนุนการตัดสินใจของบริษัท ABC พร้อม citation แหล่งที่มาทุกข้อ:\n\n1. Benchmark อุตสาหกรรม: บริษัท holding ที่มีหลายแผนก ใช้เวลาปิดงบ consolidated เฉลี่ยกี่วัน\n2. Best practice ของ Finance Transformation ด้วย AI — องค์กรที่ทำสำเร็จลดเวลาได้กี่เปอร์เซ็นต์\n3. เทคโนโลยีหรือแนวทางที่ช่วยย่นเวลาจาก \"ข้อมูลดิบ\" สู่ \"การตัดสินใจ\" ที่ได้รับความนิยมในปี 2024-2025\n4. ความเสี่ยงหรือข้อควรระวังที่องค์กรอื่นเจอตอนทำ Finance Transformation\n\nระบุ URL และชื่อแหล่งที่มาหลังทุก claim สำคัญ"}]},
+    {id:"l42",num:"Lab 4.2",title:"Thinking Mode",tag:"Research",desc:"ตัดสินใจเลือกแนวทางย่นเวลา",
+     obj:"ใช้ Thinking Mode วิเคราะห์การตัดสินใจที่มี trade-off หลายมิติ เพื่อเลือกแนวทางย่นเวลาที่ดีที่สุด",
+     prob:"การตัดสินใจนี้กระทบทั้งงบลงทุน, คน, และความเร็วที่จะเห็นผล — ต้องชั่งน้ำหนักรอบคอบ",
+     steps:["เลือก Gemini 2.0 Flash Thinking","ตั้งคำถาม decision-making ที่มี trade-off ชัดเจน","สังเกต reasoning trace ที่ AI แสดง","เปรียบเทียบกับ mode ปกติ"],
+     tip:"Thinking Mode เหมาะกับ decision ที่ถ้าผิดมีผลระยะยาว — ใช้เลือกสรรเฉพาะจุดสำคัญ",
+     prompts:[{step:"Prompt เดียว",lbl:"Thinking · เลือกแนวทางย่นเวลา Data-to-Decision",txt:"บริษัท ABC กำลังเผชิญการตัดสินใจสำคัญเรื่องการย่นเวลา Data-to-Decision:\n\nสถานการณ์:\n- ทีมการเงินกลางใช้เวลา 80% เตรียมข้อมูลจาก ทุกแผนก เหลือเวลาคิดวิเคราะห์แค่ 20%\n- ผู้บริหารต้องรอรายงานเป็นสัปดาห์กว่าจะเห็นภาพรวม\n- งบลงทุนด้าน IT มีจำกัด ต้องเลือกแนวทางที่คุ้มค่าที่สุด\n\nตัวเลือก:\nA) ลงทุนระบบ automation/integration เต็มรูปแบบ — ใช้เงินมาก แต่ผลยั่งยืน\nB) เทรนทีมการเงินใช้ Gemini ช่วยสรุปและวิเคราะห์ข้อมูลที่มีอยู่ — ลงทุนน้อย เห็นผลเร็ว\nC) Outsource งานเตรียมข้อมูลให้ third-party — เร็วแต่เสี่ยงเรื่อง data security\n\nวิเคราะห์อย่างละเอียด ชั่งน้ำหนัก trade-off ทุกมิติ และแนะนำตัวเลือกที่ดีที่สุด พร้อมเหตุผลเชิงลึก"}]}
+  ]},
+  {grp:"Agentic & Multimodal",color:"#0891b2",labs:[
+    {id:"l51",num:"Lab 5.1",title:"Video/Audio Analysis",tag:"Multimodal",desc:"วิเคราะห์เว็บไซต์ Finance AI",
+     obj:"ใช้ Gemini วิเคราะห์เว็บไซต์ vendor หรือ case study ที่ทำ Finance Transformation สำเร็จ เพื่อ benchmark",
+     prob:"บริษัท ABC ไม่รู้ว่า solution หรือ vendor ไหนที่ตอบโจทย์การย่นเวลา Data-to-Decision ได้ดีที่สุด",
+     steps:["หา URL ของเว็บไซต์ vendor หรือ case study ด้าน Finance Transformation","Paste URL เข้า Gemini พร้อม prompt วิเคราะห์","ให้ Gemini อ่าน content ทั้งหน้าและสรุป feature/ผลลัพธ์","นำ insight มาเปรียบเทียบกับสถานการณ์ของกรุ๊ป"],
+     tip:"Gemini อ่านเว็บไซต์ได้โดยตรงเมื่อ paste URL — ไม่ต้อง copy-paste content มาเอง",
+     prompts:[{step:"Prompt เดียว",lbl:"วิเคราะห์เว็บไซต์ Finance Transformation case study",txt:"[วาง URL เว็บไซต์ vendor หรือ case study ด้าน Finance Transformation / AI in Finance]\n\nวิเคราะห์เว็บไซต์นี้และตอบโดยเปรียบเทียบกับบริษัท ABC ที่มีปัญหาเรื่องเวลา Data-to-Decision ช้า:\n\n1. Solution นี้แก้ปัญหาอะไรเป็นหลัก? ใช้เทคโนโลยีหรือแนวทางอะไร?\n2. ผลลัพธ์ที่ลูกค้าได้ (ถ้ามีระบุ) — ลดเวลาได้กี่เปอร์เซ็นต์ หรือกี่วัน?\n3. มีข้อจำกัดหรือเงื่อนไขอะไรที่ต้องพิจารณาก่อนนำมาใช้?\n4. สรุป 3 สิ่งที่บริษัท ABC ควรพิจารณานำมาปรับใช้ พร้อมเหตุผล"}]},
+    {id:"l52",num:"Lab 5.2",title:"Long Context Window",tag:"Multimodal",desc:"Consolidate ข้อมูล ทุกแผนก",
+     obj:"Upload ข้อมูลการเงิน ทุกแผนก × 12 เดือน ให้ Gemini สรุปและหา anomaly ในครั้งเดียว แทนงานที่เคยใช้เวลาทีมเป็นสัปดาห์",
+     prob:"ข้อมูลกระจัดกระจายใน หลายระบบ การรวมเป็นภาพเดียวด้วยมือใช้เวลานานและเสี่ยงผิดพลาด",
+     steps:["Upload ไฟล์งบการเงิน ทุกแผนก × 12 เดือนพร้อมกัน","ถามให้ Gemini สรุปภาพรวมข้ามทุกเอกสาร","ขอให้ระบุ anomaly หรือสิ่งผิดปกติที่ควรสนใจ","ขอ executive insight ที่นำไปใช้ได้ทันที"],
+     tip:"งานที่เคยใช้เวลาทีม 1-2 สัปดาห์ ตอนนี้ทำได้ในไม่กี่นาที — นี่คือแก่นของ Speed of Insight",
+     hasUpload:true,uploadLabel:"ไฟล์ที่ต้อง Upload เข้า Gemini",
+     uploadFiles:["งบการเงินแผนก Operations (12 เดือน)","งบการเงินแผนก Logistics (12 เดือน)","งบการเงินแผนก Manufacturing (12 เดือน)","งบการเงินแผนก Property (12 เดือน)","งบการเงินแผนก IT Solutions (12 เดือน)"],
+     prompts:[{step:"Prompt เดียว",lbl:"Consolidate และวิเคราะห์งบการเงิน ทุกแผนก",txt:"วิเคราะห์ข้อมูลการเงินของ ทุกแผนกข้ามทุกเอกสารพร้อมกัน และตอบ:\n\n1. สร้างตารางสรุป Revenue / Gross Margin / Net Profit ของแต่ละแผนก เทียบ 12 เดือน\n2. มีแผนกใดที่ตัวเลขมีความผิดปกติ (anomaly) ที่ควรสนใจเป็นพิเศษ?\n3. Cashflow ของกลุ่มโดยรวมมี pattern หรือความเสี่ยงอะไรที่เห็นได้จากข้อมูล?\n4. ถ้าต้องเลือก 1 แผนกที่ต้องการความสนใจจากผู้บริหารมากที่สุดตอนนี้ คือบริษัทไหน เพราะอะไร?\n5. สรุป executive insight 3 ข้อ ที่นำเสนอบอร์ดได้ทันทีโดยไม่ต้องรอทีมวิเคราะห์เพิ่ม"}]}
+  ]},
+  {grp:"Creative & Customisation",color:"#dc2626",labs:[
+    {id:"l61",num:"Lab 6.1",title:"Canvas Mode",tag:"Tools",desc:"Draft Board Deck เร็วขึ้น",
+     obj:"ใช้ Canvas ร่างและแก้ไข board deck สรุปผลประกอบการกรุ๊ป แบบ collaborative กับ AI",
+     prob:"การทำ slide/deck นำเสนอบอร์ดบริหารแต่ละเดือน ใช้เวลามากเพราะต้องแก้ไขหลายรอบ",
+     steps:["เปิด Canvas ใน Gemini","ขอ AI draft board deck ตาม structure ที่ต้องการ","แก้ไข section ที่ต้องปรับให้ตรงกับข้อมูลจริง","ขอ AI เสนอ alternative wording ในแต่ละส่วน"],
+     tip:"Canvas ดีที่สุดสำหรับงานที่ต้องการ iteration — บอก AI แก้เฉพาะ section ที่ต้องการ ไม่ต้องเขียนใหม่ทั้งหมด",
+     prompts:[{step:"Prompt เดียว",lbl:"Canvas · Draft Board Deck สรุปผลประกอบการกรุ๊ป",txt:"เขียน outline สำหรับ board deck สรุปผลประกอบการเดือนของบริษัท ABC เปิดใน Canvas เพื่อแก้ไขร่วมกัน\n\nผู้อ่าน: คณะกรรมการบริหาร (Board of Directors)\n\nโครงสร้างที่ต้องการ:\n1. Executive Summary — ภาพรวม 1 สไลด์\n2. ผลประกอบการเทียบ ทุกแผนก — ตาราง/กราฟ\n3. Highlight & Concern — สิ่งที่ดีและสิ่งที่ต้องระวัง\n4. Action Items ที่ต้องการให้บอร์ดอนุมัติ\n5. Appendix — รายละเอียดสนับสนุน\n\nTone: ตรงประเด็น เป็นทางการ เน้นข้อมูลที่ช่วยตัดสินใจ ไม่ใช่รายละเอียดทางบัญชีที่ลึกเกินไป"}]},
+    {id:"l62",num:"Lab 6.2",title:"Gems (Custom AI)",tag:"Tools",desc:"Gem ตอบนโยบายบัญชีกรุ๊ปทันที",
+     obj:"สร้าง Gem ที่รู้ นโยบายกลางขององค์กร ครบ ตอบคำถามทีมประจำแผนกได้ทันทีโดยไม่ต้องรอทีมกลาง",
+     prob:"ทีมประจำแผนกต้องรออีเมลตอบกลับจากทีมกลางเป็นวัน กว่าจะรู้ว่าต้องลงบัญชีรายการหนึ่งๆ อย่างไรตามนโยบายกรุ๊ป",
+     steps:["เปิด Gems ใน Gemini Advanced","เขียน system instruction ที่ระบุ นโยบายกลางขององค์กร ครบ","Test ด้วยคำถามจริงที่ทีมประจำแผนกถามบ่อย","Save และ share กับบัญชีทุกแผนก"],
+     tip:"ระบุทั้ง 'ให้ทำ' และ 'ห้ามทำ' ให้ชัด — Gem ที่ดีคือ Gem ที่มี guardrails และรู้ว่าเมื่อไหร่ต้อง escalate ให้คนตัดสินใจ",
+     prompts:[{step:"Prompt เดียว",lbl:"System Instruction · Gem นโยบายกลางขององค์กร Advisor",txt:"[System Instruction สำหรับ Gem \"ABC Company — Accounting Policy Advisor\"]\n\nคุณคือผู้เชี่ยวชาญด้าน นโยบายกลางขององค์กร ของบริษัท ABC สำหรับตอบคำถามให้บัญชีของ ทุกแผนก\n\nบริบทที่คุณรู้ครบ:\n- บริษัท ABC มีหลายแผนกหลัก: การเงิน, บัญชี, ขาย, การตลาด, ปฏิบัติการ\n- ทุกแผนกต้องปิดงบตามนโยบายบัญชีกลุ่มเดียวกัน เพื่อให้ consolidate ได้ง่าย\n- เป้าหมาย: ลดเวลาที่ทีมประจำแผนกต้องรอคำตอบจากทีมกลาง จากเป็นวัน เหลือทันที\n\nเมื่อถูกถาม:\n- ตอบอ้างอิงนโยบายบัญชีกลุ่มเสมอ ไม่ใช่ความเห็นส่วนตัว\n- ถ้าคำถามซับซ้อนเกินกว่านโยบายที่มี ให้บอกตรงๆ ว่าต้อง escalate ให้ทีมกลางตัดสินใจ ไม่เดาคำตอบ\n- ตอบกระชับ พร้อมอ้างอิงข้อนโยบายที่เกี่ยวข้อง\n\nห้าม:\n- ตอบคำถามที่เกี่ยวกับการตัดสินใจทางกฎหมายหรือภาษีที่มีผลผูกพันสูง โดยไม่แจ้งให้ปรึกษาผู้เชี่ยวชาญ\n- สร้างนโยบายใหม่เองโดยไม่มีอ้างอิง"}]},
+    {id:"l63",num:"Lab 6.3",title:"Guided Learning",tag:"Tools",desc:"เทรนทีมการเงินใช้ AI",
+     obj:"ให้ Gemini สร้าง learning plan ที่ใช้สถานการณ์จริงของกรุ๊ปเป็น case study เพื่อเปลี่ยนสัดส่วนเวลาจาก 80/20 เป็น 10/90",
+     prob:"ถ้าเรียน AI แบบ generic ทีมจะไม่รู้ว่าจะ apply กับงานเตรียมข้อมูลของตัวเองได้อย่างไร",
+     steps:["ระบุ role และ use case ของแต่ละคนในทีมการเงิน","ขอ roadmap ที่ใช้สถานการณ์จริงของกรุ๊ปเป็น case study ตลอด","ขอ quiz ที่วัดจากงานจริง ไม่ใช่ทฤษฎี","ขอ AI ปรับตาม progress ของทีม"],
+     tip:"Learning plan ที่ใช้ปัญหาจริงเป็น case study ทำให้ทีม retain ได้ดีกว่าตัวอย่างสมมุติ",
+     prompts:[{step:"Prompt เดียว",lbl:"Curriculum AI เพื่อย่นเวลาเตรียมข้อมูลของทีมการเงิน",txt:"สร้าง AI learning plan 4 สัปดาห์สำหรับทีมการเงินบริษัท ABC โดยใช้เป้าหมาย \"เปลี่ยนสัดส่วนเวลาจาก 80% เตรียมข้อมูล/20% คิดวิเคราะห์ ให้เป็น 10%/90%\" เป็น case study ตลอดหลักสูตร\n\nทีมและ use case:\n- ทีมประจำแผนก: ใช้ Gemini ช่วยจัดฟอร์แมตรายงานก่อนส่งทีมกลาง\n- บัญชีทีมกลาง: ใช้ Gemini consolidate และหา anomaly จากข้อมูลหลายบริษัท\n- ผู้บริหาร: ใช้ Gemini สรุปข้อมูลก่อนประชุมบอร์ด\n\nแนวทาง:\n- ทุก exercise ใช้ข้อมูลและสถานการณ์จริงของกรุ๊ป ไม่ใช้ตัวอย่างสมมุติจาก industry อื่น\n- Week 1-2: Prompt engineering พื้นฐาน — ฝึกกับงานเตรียมข้อมูลจริง\n- Week 3: Advanced techniques — ใช้กับการวิเคราะห์และวางแผน\n- Week 4: ทดลองใช้จริง — วัดผลเวลาที่ลดลงจริง\n- Quiz ท้ายแต่ละ Week วัดจากงานจริง เช่น \"ใช้ Gemini สรุปงบเดือนให้เสร็จใน 10 นาที\""}]}
+  ]},
+  {grp:"Media Generation",color:"#db2777",labs:[
+    {id:"l71",num:"Lab 7.1",title:"Create Photo",tag:"Creative",desc:"Infographic Before/After",
+     obj:"ใช้ Imagen 3 สร้าง infographic แสดงการเปลี่ยนสัดส่วนเวลาทำงาน เพื่อสื่อสาร transformation ให้ทั้งองค์กรเข้าใจง่าย",
+     prob:"แนวคิด 'Speed of Insight' เป็นเรื่องนามธรรม ต้องการภาพที่สื่อสารได้ในไม่กี่วินาที",
+     steps:["กำหนดว่าภาพต้องสื่อ 'การเปลี่ยนแปลง' ไม่ใช่แค่ตัวเลข","ระบุ visual cue ที่แสดง before/after ชัดเจน","ใส่ branding ของบริษัท ABC","ทดสอบ: ดูภาพแล้วเข้าใจ message ได้ในไม่กี่วินาทีไหม"],
+     tip:"Infographic ที่ดีต้องสื่อ 'การเปลี่ยนแปลง' ได้แม้ไม่อ่าน caption",
+     prompts:[{step:"Prompt เดียว",lbl:"Imagen 3 · Infographic Before/After สัดส่วนเวลาทำงาน",txt:"สร้างภาพ infographic แบบ corporate clean สำหรับบริษัท ABC แสดงการเปลี่ยนแปลงสัดส่วนเวลาทำงานของทีมการเงิน\n\nLayout: แบ่งซ้าย-ขวา\nซ้าย (\"วันนี้\"): pie chart หรือ bar แสดง 80% เตรียมข้อมูล (สีเทา/แดงอ่อน) vs 20% คิดวิเคราะห์ (สีฟ้าเล็กๆ) มีไอคอนกองเอกสารและนาฬิกา\nขวา (\"เป้าหมาย\"): pie chart แสดง 10% เตรียมข้อมูล vs 90% คิดวิเคราะห์ (สีฟ้าสดใส เด่น) มีไอคอนหลอดไฟหรือกราฟเติบโต\n\nตรงกลาง: ลูกศรชี้จากซ้ายไปขวา พร้อมคำว่า \"Gemini\" เล็กๆ\nสไตล์: corporate flat design สีหลัก น้ำเงิน-ขาว สะอาด มินิมอล เหมาะกับนำเสนอผู้บริหาร\nMood: น่าเชื่อถือ ทันสมัย ไม่ดูเป็นการ์ตูนเกินไป"}]},
+    {id:"l72",num:"Lab 7.2",title:"Create Music",tag:"Creative",desc:"BGM วิดีโอ Townhall",
+     obj:"สร้างดนตรีประกอบสำหรับวิดีโอประกาศการเปลี่ยนแปลงให้พนักงานทั้งกรุ๊ป สื่อความรู้สึกมั่นใจและก้าวไปข้างหน้า",
+     prob:"การประกาศ transformation ครั้งใหญ่ต้องการ tone ที่สร้างความเชื่อมั่น ไม่ใช่สร้างความกังวล",
+     steps:["กำหนด mood ที่สื่อความมั่นใจและก้าวหน้า ไม่สร้างความกังวล","เลือก genre แบบ corporate ที่เป็นมิตร","ระบุ tempo ที่กระตุ้นแต่ไม่เร่งเร้าเกินไป","ออกแบบ structure ที่ build ความรู้สึกไปข้างหน้า"],
+     tip:"ดนตรีสำหรับ change management ต้องสร้างความมั่นใจ ไม่ใช่ดราม่าหรือสร้างความกังวล",
+     prompts:[{step:"Prompt เดียว",lbl:"BGM สำหรับวิดีโอประกาศ Speed of Insight Transformation",txt:"สร้างดนตรีพื้นหลังสำหรับวิดีโอ townhall ประกาศการเปลี่ยนแปลง \"Speed of Insight\" ให้พนักงานทั้งบริษัท ABC ความยาว 60 วินาที\n\nโจทย์หลัก: ดนตรีต้องสร้างความรู้สึก \"มั่นใจ ก้าวไปข้างหน้า\" ไม่ใช่ความกังวลว่าจะถูกแทนที่ด้วย AI\n\nGenre: Corporate Inspirational Minimal\nInstruments: เปียโนเบาๆ (melody หลัก) + string section อ่อนๆ (harmony) + subtle percussion (เพิ่มพลังตอนท้าย)\nBPM: 90-100 (กระฉับกระเฉงแต่ไม่เร่งเร้า)\nMood: มั่นใจ อบอุ่น มีความหวัง\nAvoid: ดนตรีดราม่า เครื่องสายเศร้า หรือจังหวะที่ฟังดูเร่งรีบจนกังวล\nStructure: intro เปียโนเดี่ยว 15 วิ → build ด้วย string 30 วิ → climax กระฉับกระเฉง 15 วิ"}]},
+    {id:"l73",num:"Lab 7.3",title:"Create Video",tag:"Creative",desc:"วิดีโอประกาศ The Speed of Insight",
+     obj:"ใช้ Gemini Veo สร้างวิดีโอสั้น 30 วินาที ประกาศการเปลี่ยนแปลงให้พนักงานทั้งกรุ๊ปเข้าใจและตื่นเต้นไปด้วยกัน",
+     prob:"การ roll-out เครื่องมือใหม่ทั้งองค์กรต้องการวิดีโอที่สื่อสาร 'ทำไมต้องเปลี่ยน' ได้ชัดเจนภายในไม่กี่สิบวินาที",
+     steps:["เปิด Veo ใน Gemini Advanced หรือ Google Labs","ใช้ Prompt 1 ให้ Gemini วาง shot plan ก่อน","อนุมัติ shot plan แล้ว generate วิดีโอจริงด้วย Prompt 2"],
+     tip:"ถ้า Veo ยังไม่พร้อม ใช้ Prompt 2 กับ Google VideoFX หรือ Runway ML แทนได้เลย",
+     isVideoLab:true,
+     prompts:[
+      {step:"Prompt 1 — วาง shot plan ก่อน",lbl:"ให้ Gemini ช่วยวาง shot plan",txt:"ฉันกำลังสร้างวิดีโอ Internal Announcement 30 วินาที สำหรับบริษัท ABC เพื่อประกาศ transformation \"The Speed of Insight\"\n\nเป้าหมายวิดีโอ: ทำให้พนักงานทุกแผนกเข้าใจว่าทำไมองค์กรต้องเปลี่ยน และรู้สึกตื่นเต้นที่จะมีเวลามากขึ้นสำหรับงานที่มีคุณค่า ไม่ใช่กลัวว่าจะถูกแทนที่\n\nช่วยวางแผน shot sequence 5-6 shot ที่เล่าเรื่อง \"จากเวลาที่เสียไปกับงานประจำ สู่เวลาที่ได้คิดงานสำคัญ\" พร้อม:\n- สิ่งที่เห็นในแต่ละ shot\n- camera movement ที่เหมาะสม\n- emotion ที่ต้องการให้คนดูรู้สึก\n\nFormat: 16:9 horizontal สำหรับเปิดในที่ประชุม\nMood: corporate มืออาชีพ มีความหวัง ไม่ใช่ดราม่า"},
+      {step:"Prompt 2 — Generate วิดีโอด้วย Veo",isDivider:true,lbl:"สร้างวิดีโอประกาศ The Speed of Insight 30 วินาที",txt:"สร้างวิดีโอ Internal Announcement 30 วินาที สำหรับบริษัท ABC เรื่อง \"The Speed of Insight\"\n\nFormat: 16:9 horizontal · 30 วินาที · cinematic corporate style\n\nShot sequence:\n00:00-00:05 — close-up นาฬิกาเดินเร็ว ตัดสลับกับกองเอกสารสูงบนโต๊ะทำงาน แสงสำนักงานเย็นๆ\n00:05-00:12 — montage พนักงานก้มหน้าคีย์ข้อมูล Excel หลายไฟล์ สีหน้าเหนื่อยล้า จังหวะตัดเร็ว\n00:12-00:18 — transition: หน้าจอ laptop เปิด Gemini ขึ้น ข้อมูลถูกประมวลผลเป็น dashboard สวยงามในไม่กี่วินาที แสงเปลี่ยนเป็นโทนอบอุ่น\n00:18-00:25 — ผู้บริหารดู dashboard บนแท็บเล็ต ยิ้ม พยักหน้า ตัดสินใจได้ทันที พนักงานในพื้นหลังดูผ่อนคลายมากขึ้น\n00:25-00:30 — Logo บริษัท ABC fade in พร้อมคำว่า \"The Speed of Insight\" บนพื้นหลังสีน้ำเงินสะอาด\n\nColor grade: corporate blue-white, warm tone ในช่วงท้าย\nCamera: smooth dolly และ close-up สลับ ไม่ใช้ shaky cam\nMood: เปลี่ยนจากเหนื่อยล้าไปสู่มั่นใจและมีความหวัง"}
+     ]}
+  ]},
+  {grp:"Integration",color:"#d97706",labs:[
+    {id:"l81",num:"Lab 8.1",title:"Gemini in Chrome",tag:"Integration",desc:"วิเคราะห์เว็บไซต์ Finance AI แบบ Real-time",
+     obj:"ใช้ Gemini in Chrome Extension วิเคราะห์เว็บไซต์ solution ด้าน Finance AI แบบ real-time โดยไม่ต้อง copy URL",
+     prob:"ทีม IT และการเงินต้องเปรียบเทียบ solution หลายตัวอย่างรวดเร็วเพื่อเสนอผู้บริหาร",
+     steps:["ติดตั้ง Gemini in Chrome Extension จาก Chrome Web Store","เปิดเว็บไซต์ vendor ด้าน Finance AI / Automation","คลิก Gemini icon ที่ address bar เพื่อเปิด sidebar","ถาม Gemini วิเคราะห์เว็บที่กำลังเปิดอยู่โดยตรง"],
+     tip:"Gemini in Chrome วิเคราะห์หน้าเว็บที่กำลังดูอยู่ได้โดยตรง — ไม่ต้อง copy-paste content เลย",
+     prompts:[{step:"Prompt เดียว",lbl:"วิเคราะห์เว็บไซต์ Finance AI Solution ที่กำลังเปิดอยู่",txt:"[เปิดเว็บไซต์ vendor ด้าน Finance AI/Automation แล้วถาม Gemini ใน sidebar:]\n\nวิเคราะห์เว็บไซต์นี้และตอบโดยเปรียบเทียบกับความต้องการของบริษัท ABC (ต้องการย่นเวลา Data-to-Decision จาก ทุกแผนก):\n\n1. Solution นี้แก้ปัญหาอะไรเป็นหลัก?\n2. รองรับการเชื่อมต่อกับระบบ ERP หลายตัวหรือไม่?\n3. มี case study หรือผลลัพธ์ที่วัดได้ระบุไว้ไหม?\n4. สรุป fit/gap ระหว่าง solution นี้กับความต้องการของกรุ๊ป"}]},
+    {id:"l82",num:"Lab 8.2",title:"NotebookLM",tag:"Integration",desc:"Knowledge Base กรุ๊ปครบในที่เดียว",
+     obj:"รวม นโยบายกลางขององค์กร, SOP, และรายงานการเงิน ทุกแผนกไว้ใน Notebook เดียว ให้ทุกคนถามได้ทันที",
+     prob:"เดิมทีมประจำแผนกต้องรออีเมลตอบกลับจากทีมกลาง 1-2 วัน กว่าจะได้คำตอบเรื่องนโยบายหรือตัวเลขที่ต้องการ",
+     steps:["สร้าง notebook ที่ notebooklm.google.com","Upload เอกสาร 5 ประเภทตามรายการด้านขวา","ถามคำถาม synthesis ข้ามเอกสาร","สร้าง Audio Overview สำหรับ brief ทีมก่อนประชุมบอร์ด"],
+     tip:"NotebookLM ไม่ hallucinate จาก internet — ข้อมูลที่ได้น่าเชื่อถือและ cite ได้ทุกข้อ เหมาะมากกับข้อมูลการเงินที่ต้องการความถูกต้อง 100%",
+     hasUpload:true,uploadLabel:"เอกสารที่ต้อง Upload เข้า NotebookLM",
+     uploadFiles:["นโยบายกลางขององค์กร (ฉบับล่าสุด)","SOP กระบวนการปิดงบรายเดือน","รายงานการเงิน ทุกแผนก (12 เดือน)","Board Meeting Minutes ย้อนหลัง 6 เดือน","Budget vs Actual Report"],
+     prompts:[{step:"Prompt เดียว",lbl:"สร้าง Knowledge Base และตอบคำถามข้ามเอกสารทั้งหมด",txt:"คำถามที่ต้องการคำตอบจากเอกสารของกรุ๊ปเราเอง:\n\n1. สรุปสาระสำคัญของ นโยบายกลางขององค์กร ที่ทีมประจำแผนกต้องรู้มากที่สุด 5 ข้อ\n2. จากรายงานการเงิน 12 เดือน มี trend หรือความเสี่ยงอะไรที่ board เคยพูดถึงใน meeting minutes และยังไม่ถูกแก้ไข?\n3. Budget vs Actual ของแผนกใดที่เบี่ยงเบนมากที่สุด และ SOP ปัจจุบันมีขั้นตอนรองรับสถานการณ์นี้หรือไม่?\n4. สร้าง FAQ 10 ข้อที่ทีมประจำแผนกถามบ่อยที่สุด พร้อมคำตอบอ้างอิงจากนโยบาย\n5. สร้าง Audio Overview สรุปสถานการณ์การเงินกรุ๊ปทั้งหมด สำหรับ brief ทีมก่อนประชุมบอร์ด 5 นาที"}]}
+  ]}
+];
+
+const allLabs=D.flatMap(s=>s.labs);
+let curId=null;
+const visited=new Set();
+
+function renderCur(){
+  document.getElementById('cur').innerHTML=D.map(s=>`
+    <div class="section">
+      <div class="sechdr"><div class="secbar" style="background:${s.color}"></div><span class="seclbl">${s.grp}</span></div>
+      <div class="lgrid">${s.labs.map(l=>`
+        <div class="lc ${visited.has(l.id)?'vis':''} ${l.isDemo?'demo-lab':''}" onclick="openLab('${l.id}')">
+          <div class="lcn">${l.num}</div><div class="lct">${l.title}</div><div class="lcd">${l.desc}</div>
+        </div>`).join('')}
+      </div>
+    </div>`).join('');
+}
+
+function openLab(id){
+  const lab=allLabs.find(l=>l.id===id);
+  if(!lab)return;
+  curId=id;visited.add(id);
+  document.getElementById('landing').style.display='none';
+  document.getElementById('ldetail').style.display='block';
+  const idx=allLabs.findIndex(l=>l.id===id);
+  document.getElementById('nc').style.display='flex';
+  document.getElementById('nl').textContent=lab.num+' · '+lab.title;
+  const np=document.getElementById('np'),nn=document.getElementById('nn');
+  np.disabled=idx===0;
+  np.textContent=idx>0?'← '+allLabs[idx-1].num:'← Prev';
+  if(idx===allLabs.length-1){nn.textContent='เสร็จแล้ว ✓';nn.onclick=goHome;}
+  else{nn.textContent=allLabs[idx+1].num+' →';nn.onclick=()=>navL(1);}
+
+  document.getElementById('dbadge').textContent=lab.tag;
+  document.getElementById('dtitle').textContent=lab.title;
+  document.getElementById('dobj').textContent=lab.obj;
+  document.getElementById('dprob').textContent=lab.prob;
+
+  const fwEl=document.getElementById('dfw');
+  if(lab.fw){
+    document.getElementById('dfw-pills').innerHTML=lab.fw.map(f=>'<div class="fw-pill" style="background:'+f.bg+';border:1px solid '+f.color+'30"><div class="fw-letter" style="color:'+f.color+'">'+f.letter+'</div><div class="fw-word" style="color:'+f.color+'">'+f.word+'</div><div class="fw-desc" style="color:'+f.color+'">'+f.desc+'</div></div>').join('');
+    fwEl.style.display='block';
+  } else fwEl.style.display='none';
+
+  document.getElementById('dsteps').innerHTML=lab.steps.map((s,i)=>'<div class="step"><div class="snum">'+(i+1)+'</div><div class="stxt">'+s+'</div></div>').join('');
+
+  const extra=document.getElementById('dextra');
+  if(lab.isVideoLab){
+    extra.innerHTML='<div style="margin-top:18px"><div class="sh">Transformation ที่วิดีโอนี้สื่อสาร</div><div class="product-card"><div class="product-name">The Speed of Insight — Internal Announcement</div><div class="stat-row"><div class="stat-chip"><div class="stat-chip-lbl">เตรียมข้อมูล</div><div class="stat-chip-val"><span class="from">80%</span><span class="arrow">→</span><span class="to">10%</span></div></div><div class="stat-chip"><div class="stat-chip-lbl">คิดเชิงกลยุทธ์</div><div class="stat-chip-val"><span class="from">20%</span><span class="arrow">→</span><span class="to">90%</span></div></div><div class="stat-chip"><div class="stat-chip-lbl">เวลารอรายงาน</div><div class="stat-chip-val"><span class="from">สัปดาห์</span><span class="arrow">→</span><span class="to">นาที</span></div></div></div></div><div class="sh">Shot sequence — 30 วินาที</div><div class="seq-block">'+[
+      {ts:"0:00–0:05",dot:"#94a3b8",shot:"Time Pressure Hook",cam:"close-up นาฬิกา + กองเอกสาร"},
+      {ts:"0:05–0:12",dot:"#dc2626",shot:"Manual Work Montage",cam:"montage คีย์ข้อมูล Excel"},
+      {ts:"0:12–0:18",dot:"#2563eb",shot:"Gemini Reveal",cam:"transition หน้าจอ Gemini"},
+      {ts:"0:18–0:25",dot:"#059669",shot:"Confident Decision",cam:"ผู้บริหารดู dashboard"},
+      {ts:"0:25–0:30",dot:"#1e40af",shot:"Logo & Tagline",cam:"fade in 'The Speed of Insight'"},
+    ].map(r=>'<div class="seq-row"><div class="seq-ts">'+r.ts+'</div><div class="seq-dot" style="background:'+r.dot+'"></div><div class="seq-info"><div class="seq-shot">'+r.shot+'</div><div class="seq-cam">'+r.cam+'</div></div></div>').join('')+'</div><div class="plat-row"><div class="plat"><div class="plat-l">Format</div><div class="plat-v">16:9 horizontal</div></div><div class="plat"><div class="plat-l">ความยาว</div><div class="plat-v">30 วินาที</div></div><div class="plat"><div class="plat-l">Platform</div><div class="plat-v">Internal Townhall</div></div><div class="plat"><div class="plat-l">Mood</div><div class="plat-v">Corporate · Hopeful</div></div></div></div>';
+  } else extra.innerHTML='';
+
+  let sbHtml='<div class="sblbl">Prompts</div>';
+  if(lab.hasUpload){
+    sbHtml+='<div class="upload-box"><div class="upload-label">'+lab.uploadLabel+'</div><div class="upload-list">'+lab.uploadFiles.map(f=>'<div class="upload-item"><div class="upload-item-dot"></div><div class="upload-item-name">'+f+'</div></div>').join('')+'</div></div>';
+  }
+  lab.prompts.forEach((p,i)=>{
+    if(p.isDivider)sbHtml+='<div class="divlbl">รับผลลัพธ์แล้ว — ทำต่อ</div>';
+    const isDemo=p.isDemo;
+    sbHtml+='<div class="'+(isDemo?'pbox-demo':'pbox')+'"><div class="pstep '+(p.isDivider?'pstep-w':'')+(isDemo?' pstep-demo':'')+'">'+p.step+'</div><div class="plbl">'+p.lbl+'</div><div class="'+(isDemo?'ptxt-demo':'ptxt')+'" id="pt'+i+'">'+escHtml(p.txt)+'</div><button class="'+(isDemo?'bcopy-demo':'bcopy')+'" id="bc'+i+'" onclick="doCopy('+i+')">Copy prompt</button></div>';
+  });
+  if(lab.tip)sbHtml+='<div class="tipbox"><div class="tiplbl">Pro tip</div><div class="tiptxt">'+lab.tip+'</div></div>';
+  document.getElementById('dsb').innerHTML=sbHtml;
+  renderCur();
+}
+
+function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function doCopy(i){
+  const el=document.getElementById('pt'+i);
+  const btn=document.getElementById('bc'+i);
+  if(!el||!btn)return;
+  navigator.clipboard.writeText(el.innerText).catch(()=>{});
+  const orig=btn.textContent;
+  btn.textContent='Copied!';btn.classList.add('cp');
+  setTimeout(()=>{btn.textContent=orig;btn.classList.remove('cp');},1800);
+  const t=document.getElementById('toast');
+  t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800);
+}
+
+function navL(d){const i=allLabs.findIndex(l=>l.id===curId);if(allLabs[i+d])openLab(allLabs[i+d].id);}
+function goHome(){
+  document.getElementById('landing').style.display='block';
+  document.getElementById('ldetail').style.display='none';
+  document.getElementById('nc').style.display='none';
+  renderCur();
+}
+renderCur();
+</script>
+</body>
+</html>
