@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gemini in Action · Prompt Template</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root{
+    --bg: #f7f8fc;
+    --panel: #12172400;
+    --panel-solid: #ffffff;
+    --line: #e2e6f0;
+    --ink: #1c2233;
+    --ink-dim: #6b7386;
+    --ink-faint: #a3aabb;
+    --accent-a: #4a63e6;
+    --accent-b: #9350d9;
+    --accent-c: #0fa383;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'IBM Plex Sans Thai', 'Space Grotesk', sans-serif;
+    --disp: 'Space Grotesk', 'IBM Plex Sans Thai', sans-serif;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(ellipse 900px 500px at 15% -10%, rgba(74,99,230,0.10), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 100% 10%, rgba(147,80,217,0.08), transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.6;
+    min-height:100vh;
+  }
+
+  .wrap{max-width:920px; margin:0 auto; padding:56px 24px 100px;}
+
+  /* ---- Header ---- */
+  .eyebrow{
+    font-family:var(--mono); font-size:12px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--accent-c); margin-bottom:14px; display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{content:''; width:7px; height:7px; border-radius:50%; background:var(--accent-c); box-shadow:0 0 12px var(--accent-c);}
+  h1{
+    font-family:var(--disp); font-weight:700; font-size:clamp(30px,5vw,46px);
+    margin:0 0 10px; letter-spacing:-0.02em;
+    background:linear-gradient(120deg, var(--ink) 10%, var(--accent-a) 60%, var(--accent-b) 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .sub{color:var(--ink-dim); font-size:15.5px; max-width:640px;}
+  .note{
+    margin-top:22px; padding:14px 16px; border:1px dashed var(--line); border-radius:10px;
+    font-size:13.5px; color:var(--ink-dim); background:rgba(74,99,230,0.06);
+  }
+  .note b{color:var(--accent-a); font-weight:600;}
+
+  /* ---- Filter bar ---- */
+  .filters{
+    display:flex; flex-wrap:wrap; gap:8px; margin:32px 0 8px;
+    position:sticky; top:0; padding:14px 0; background:linear-gradient(var(--bg) 78%, transparent);
+    z-index:10;
+  }
+  .chip{
+    font-family:var(--mono); font-size:12.5px; padding:7px 14px; border-radius:100px;
+    border:1px solid var(--line); background:var(--panel-solid); color:var(--ink-dim);
+    cursor:pointer; transition:all .15s ease; white-space:nowrap;
+  }
+  .chip:hover{border-color:var(--accent-a); color:var(--ink);}
+  .chip.active{
+    background:linear-gradient(120deg, var(--accent-a), var(--accent-b));
+    border-color:transparent; color:#ffffff; font-weight:600;
+  }
+
+  /* ---- Lab card ---- */
+  .lab{
+    border:1px solid var(--line); border-radius:16px; margin-top:22px; overflow:hidden;
+    background:#ffffff;
+    box-shadow:0 1px 3px rgba(28,34,51,0.04), 0 8px 24px rgba(28,34,51,0.03);
+    transition:border-color .2s ease;
+  }
+  .lab-head{
+    display:flex; align-items:flex-start; justify-content:space-between; gap:16px;
+    padding:20px 22px; border-bottom:1px solid var(--line);
+  }
+  .lab-titles{display:flex; flex-direction:column; gap:4px;}
+  .lab-num{font-family:var(--mono); font-size:12px; color:var(--accent-a); letter-spacing:.06em;}
+  .lab-name{font-family:var(--disp); font-size:19px; font-weight:600; color:var(--ink);}
+  .lab-tag{
+    font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:5px 10px; border-radius:6px; height:fit-content; white-space:nowrap;
+    border:1px solid var(--line); color:var(--ink-dim);
+  }
+  .steps{padding:6px 22px 18px;}
+  .step{
+    padding:16px 0; border-bottom:1px solid var(--line);
+  }
+  .step:last-child{border-bottom:none;}
+  .step-label{
+    display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px;
+  }
+  .step-label-text{
+    font-size:13.5px; font-weight:600; color:var(--accent-b);
+  }
+  .copy-btn{
+    display:flex; align-items:center; gap:6px;
+    font-family:var(--mono); font-size:11.5px; letter-spacing:.03em;
+    padding:6px 12px; border-radius:8px; border:1px solid var(--line);
+    background:#f7f8fc; color:var(--ink-dim); cursor:pointer;
+    transition:all .15s ease; flex-shrink:0;
+  }
+  .copy-btn:hover{border-color:var(--accent-c); color:var(--ink);}
+  .copy-btn.copied{
+    background:rgba(15,163,131,0.10); border-color:var(--accent-c); color:var(--accent-c);
+  }
+  .copy-btn svg{width:13px; height:13px; flex-shrink:0;}
+  .prompt-box{
+    font-family:var(--mono); font-size:13.5px; line-height:1.75; color:#dbe1f0;
+    background:#171d2c; border:1px solid #171d2c; border-radius:10px;
+    padding:14px 16px; white-space:pre-wrap; word-break:break-word;
+  }
+  .prompt-box .ph{color:#8fa3ff; font-weight:600;}
+
+  footer{
+    text-align:center; margin-top:60px; padding-top:24px; border-top:1px solid var(--line);
+    font-family:var(--mono); font-size:11.5px; color:var(--ink-faint); letter-spacing:.05em;
+  }
+
+  @media (max-width:600px){
+    .wrap{padding:36px 16px 80px;}
+    .lab-head{flex-direction:column;}
+    .filters{position:static;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow">Workshop · Business Use Cases</div>
+  <h1>Gemini in Action</h1>
+  <p class="sub">รวม Prompt Template ทุก Lab กดปุ่ม “Copy” ที่ Prompt ไหนก็ได้เพื่อคัดลอกไปวางใน Gemini ได้ทันที</p>
+  <div class="note">ข้อความในวงเล็บสีฟ้า เช่น <span class="ph">[ชื่อแผนก]</span> คือจุดที่ต้อง<b>แทนที่ด้วยข้อมูล Use Case ของคุณเอง</b> ก่อนส่งให้ Gemini</div>
+
+  <div class="filters" id="filters"></div>
+  <div id="labs"></div>
+
+  <footer>Gemini in Action · AI Training Series · Workshop: Business Use Cases</footer>
+</div>
+
+<script>
+const DATA = [
+  { num:"Lab 0", name:"Demo", tag:"Intro", steps:[
+    { label:"รู้จัก Gemini", prompt:`สวัสดี ฉันทำงานในแผนก[ชื่อแผนก]ในภาคธุรกิจ[ชื่อภาคธุรกิจ] ช่วยแนะนำ 3 วิธีที่ Gen AI จะช่วยงานฉันได้` }
+  ]},
+  { num:"Lab 1", name:"Workshop 1", tag:"Intro", steps:[
+    { label:"Use Case ABC", prompt:`ฉันทำแผนก[ชื่อแผนก] บริษัท ABC ผลิตกระเป๋าเดินทาง ปัญหาคือข้อมูลกระจายไปตามแผนก ทีมเสียเวลาเตรียมข้อมูล 80% จนรายงานล่าช้า กระทบการตัดสินใจและขาดการวิเคราะห์ของทีมบริหาร แนะนำ 3 วิธีที่ Gen AI จะช่วยแก้ปัญหานี้ได้` }
+  ]},
+  { num:"Lab 2.1", name:"4 RTCC Framework", tag:"Prompt Framework", steps:[
+    { label:"Prompt เดียว — RTCC · วิเคราะห์ปัญหาหลักของแผนกคุณ", prompt:`คุณคือผู้เชี่ยวชาญด้านการจัดการซัพพลายเชน (Supply Chain) ตรวจสอบข้อมูลสินค้าคงคลังจากไฟล์ที่แนบมาเพื่อค้นหาสินค้าที่ไม่มีการเคลื่อนไหวเกิน 90 วัน และทำให้เกิดมูลค่าเงินจม (Tied-up Capital)สูงที่สุด เนื่องบริษัทต้องดึงเงินสดกลับมาหมุนเวียนให้เร็วที่สุด เพราะกำลังเสียเปรียบคู่แข่งในตลาด ให้สรุปสถานะสีแดงวิกฤตที่สุดเพียง 1 จุด (ระบุมูลค่าเงินจม)และขอ 3ทางเลือกเร่งด่วนเพื่อเคลียร์สต็อก` }
+  ]},
+  { num:"Lab 2.2", name:"Google Framework", tag:"Prompt Framework", steps:[
+    { label:"Prompt เดียว — Persona, Task, Format, Context", prompt:`คุณคือผู้เชี่ยวชาญด้านการจัดการซัพพลายเชน (Supply Chain) ให้ตรวจสอบข้อมูลสินค้าคงคลังจากไฟล์ที่แนบมาเพื่อค้นหาสินค้าที่ไม่มีการเคลื่อนไหวเกิน 90 วัน และทำให้เกิดมูลค่าเงินจม (Tied-up Capital)สูงที่สุด ขอผลลัพธ์ในรูปแบบ 'รายงานสรุปผู้บริหาร' โดยให้จัดทำสถานะสีแดงวิกฤตที่สุด 1 จุดเป็น 'รูปแบบตาราง' (ระบุชื่อสินค้า, อายุจัดเก็บ, และมูลค่าเงินจม) และขอ 3ทางเลือกเร่งด่วนเพื่อเคลียร์สต็อก Bullet points เนื่องบริษัทต้องดึงเงินสดกลับมาหมุนเวียนให้เร็วที่สุด เพราะกำลังเสียเปรียบคู่แข่งในตลาด` }
+  ]},
+  { num:"Lab 2.3", name:"TCREI Framework", tag:"Prompt Framework", steps:[
+    { label:"ช่วงที่ 1 — ทำ TCR ก่อน · T·C·R สร้าง content ครั้งแรก", prompt:`คุณคือ Chief Data Officer (CDO) ที่เชี่ยวชาญด้านการวางระบบ ERP และการเชื่อมโยงข้อมูลข้ามแผนก (Cross-functional Data Integration) ช่วยออกแบบ "โครงสร้างตารางข้อมูลกลาง (Centralized Data Dashboard)" ที่ต้องเชื่อมโยงข้อมูลข้ามแผนก (Cross-functional Data Integration) เพื่อให้ทุกแผนกต้องเข้ามาอัปเดตและใช้ร่วมกัน
+
+ปัจจุบัน บริษัท ABC ผู้ผลิตกระเป๋าเดินทาง ติดปัญหา Data Silo จนพนักงานเสียเวลาตามข้อมูล 80% เราต้องการแชร์ข้อมูลกลางเพื่อให้: แผนกขายเห็นสต็อกจริง, คลังสินค้าบริหารพื้นที่จัดเก็บได้, จัดซื้อเช็กอะไหล่เก่าข้ามรุ่นได้, ฝ่ายผลิตวางแผนคิวประกอบได้ทันที, และบัญชีเห็นตัวเลขเงินทุนจมของสต็อกเก่าเพื่ออนุมัติงบซื้อวัตถุดิบรุ่นนวัตกรรมใหม่ได้รวดเร็ว
+
+ขอผลลัพธ์เป็น รูปแบบตาราง (Table) ที่ประกอบด้วยคอลัมน์: ชื่อชุดข้อมูล, แผนกที่เป็นต้นทาง (Owner), แผนกที่ต้องนำข้อมูลไปใช้ต่อ, และความถี่ในการอัปเดต` },
+    { label:"ช่วงที่ 2 — หลังได้ผลลัพธ์ · E ประเมิน content ที่ได้", prompt:`ประเมินคำตอบจาก AI ที่เพิ่งสร้าง:
+1. ตารางได้ครบถ้วนชัดเจนไหม?
+2. ความถี่และคอลัมน์ที่ออกแบบช่วยลดภาระการตรวจสอบข้อมูลที่ซ้ำซ้อนได้จริงหรือยัง?
+3. ต้องปรับแก้ในจุดไหนบ้าง` },
+    { label:"I · (ปรับแก้)", prompt:`ให้ตรวจสอบและแนะนำอีกทีว่าควรจะมีคอลัมน์เพิ่มได้อีกบ้าง` }
+  ]},
+  { num:"Lab 3.1", name:"Chain of Thought", tag:"Advanced", steps:[
+    { label:"Prompt เดียว — CoT · หา root cause ที่แท้จริง", prompt:`ฝ่ายบริหารได้รับรายงานสต็อกและต้นทุนล่าช้า แม้มีการบันทึกข้อมูลทุกวัน ข้อจำกัดคือพนักงานต้องดึงข้อมูลผ่าน Excel เอง และรหัสสินค้า (SKU) ไม่ตรงกันในแต่ละแผนก ข้อมูลที่มีคือยอดผลิตรายสัปดาห์และราคาวัตถุดิบ จงวิเคราะห์ตามลำดับ: 1. ตั้ง hypothesis สาเหตุความล่าช้า (อย่างน้อย 3 ข้อ) 2. วิเคราะห์ตามบริบท ABC 3. ระบุ root cause และ symptom 4. สรุปวิธีแก้เพื่อให้รายงานผลได้ทุกสัปดาห์` }
+  ]},
+  { num:"Lab 3.2", name:"Tree of Thoughts", tag:"Advanced", steps:[
+    { label:"Prompt เดียว — ToT · 3 มุมมองช่วยตัดสินใจ", prompt:`ในปัญหาเดียวกันนี้ ขอ 3 แนวทางแก้ปัญหาเป็นลำดับขั้นตอนจากมุมมอง: Expert 1 (ตลาด): การตอบสนองเทรนด์ตามฤดูกาลและโอกาสการขายที่เสียไป Expert 2 (ผลิต): กำลังการผลิต ของเสีย และคิวเครื่องจักร Expert 3 (CFO): ต้นทุนสต็อกจมและกระแสเงินสด ให้ทั้ง 3 คน debate สรุป 1 คำแนะนำที่ดีที่สุด พร้อมแผนปฏิบัติการ 3 เดือนแบบย่อ` }
+  ]},
+  { num:"Lab 3.3", name:"Self-Correction", tag:"Advanced", steps:[
+    { label:"วิจารณ์และแก้ไข", prompt:`ทบทวนแผนปฏิบัติการอีกครั้ง: ระบุสิ่งที่เป็นจุดอ่อนของคำตอบ เช่น ส่วนที่ฟังดูดีแต่ฝ่ายผลิตอาจจะผลิตตาม Spec นั้นไม่ทันจริง ให้เขียน output ใหม่แก้ไขจุดอ่อน ความยาวเท่าเดิม ระบุว่า version ใหม่ต่างจากเดิมอย่างไร` }
+  ]},
+  { num:"Lab 3.4", name:"Chain of Density", tag:"Advanced", steps:[
+    { label:"Step 1 — Draft แรก · เขียน content เวอร์ชันแรก", prompt:`เขียน Brand Story 150 คำ ให้กับ บริษัท ABC ผู้ผลิตกระเป๋าเดินทาง ข้อมูลสำคัญ: 1.นวัตกรรม Hydro Technology: ทำความสะอาดตัวเองด้วยน้ำ ชะล้างคราบสายพานสนามบินได้ทันทีโดยไม่ต้องขัด 2.เน้นสีพาสเทลและโทนอ่อนที่ใช้งานได้จริง ไร้กังวลเรื่องรอยสกปรกฝังลึก 3.แบรนด์ไทยที่พัฒนาเพื่อนักเดินทางยุคใหม่
+
+เป้าหมาย: นักเดินทางสายแฟชั่นที่ชอบสีพาสเทล ให้รู้สึกทึ่งในนวัตกรรมและอยากสนับสนุนแบรนด์ไทย
+
+Tone: เป็นมิตรและสร้างแรงบันดาลใจ` },
+    { label:"Step 2 — เพิ่มความเข้มข้น · หา 1 สิ่งที่ขาด แล้วเขียนใหม่", prompt:`ระบุ 1 ข้อมูลสำคัญที่ขาดจาก content แล้วเขียน prompt ใหม่ โดยสั่งให้ Gemini ใส่ข้อมูลนั้นเข้าไปให้ครบ` },
+    { label:"Step 3-5 — Iterate · ทำซ้ำอีก 3 รอบ", prompt:`ทำซ้ำขั้นตอนเดิมจนได้ content ที่เข้มข้นที่สุด แสดงทุก version เรียงกัน พร้อมระบุว่าแต่ละรอบเพิ่มอะไรเข้าไป` }
+  ]},
+  { num:"Lab 4.0", name:"Deep Research", tag:"Research", steps:[
+    { label:"Prompt เดียว — Research · ข้อมูลตลาดและ trend", prompt:`Research หัวข้อต่อไปนี้สำหรับ บริษัท ABC ผู้ผลิตกระเป๋าเดินทาง เพื่อวิเคราะห์ภาพรวมตลาด เทรนด์ผู้บริโภค และโอกาสทางธุรกิจใหม่ๆ ในปี 2026:
+1. ปัญหา/Insightผู้ใช้กระเป๋าเดินทาง: ปี 2025-2026 ปัญหาหลักที่นักเดินทางพบบ่อยคืออะไรเช่น ความทนทาน ความสะอาด และประเด็นใดถูกวิจารณ์มากที่สุดในโซเชียลมีเดีย
+2. สถานการณ์คู่แข่ง: แบรนด์ชั้นนำปรับตัวอย่างไร ชูจุดขาย (USP) ใด และใช้กลยุทธ์ราคาหรือเจาะกลุ่มใหม่ที่น่าสนใจอย่างไร
+3. เทคโนโลยีและนวัตกรรมใหม่: ที่ ABC สามารถนำมาใช้ได้
+4. ขอ ลิงก์ YouTube รีวิวพฤติกรรมผู้ใช้, วิเคราะห์คู่แข่ง หรือนวัตกรรมใหม่ เพื่อใช้ประกอบการวางแผนกลยุทธ์` }
+  ]},
+  { num:"Lab 5.1", name:"Video/Audio Analysis", tag:"Multimodal", steps:[
+    { label:"Prompt 1 — วางแผนวิเคราะห์ shot plan", prompt:`ให้วิเคราะห์คลิปวีดีโอ[ลิงก์ YouTube Lab4] เปรียบเทียบกับ บริษัท ABC ที่มีสินค้าใหม่เป็น[นวัตกรรมที่ต้องการสร้าง]
+1. แบรนด์นี้ใช้ headline และ messaging อะไร? สื่อ value ของ[นวัตกรรม/สินค้า]ว่าอย่างไร?
+2. พวกเขา educate [กลุ่มลูกค้า]อย่างไร?
+3. Pricing และ positioning เป็นอย่างไร?
+4. สรุป 3 สิ่งที่ บริษัท ABC ควรนำมาปรับใช้ทันที พร้อมเหตุผล` }
+  ]},
+  { num:"Lab 6.1", name:"Canvas Mode", tag:"Tools", steps:[
+    { label:"Prompt เดียว — Canvas · Draft document สำหรับบริษัทคุณ", prompt:`แผนโครงสร้างเวลาผลิตเชิงกลยุทธ์ (Strategic Product Transition Timeline) เพื่อกำหนดวันผลิต "ABC Hydro-Shield" และคำนวณหน้าต่างเวลาระบายสินค้าเก่า
+
+ข้อมูลที่ต้องมี:
+1. [Phase 1: R&D Timeline]
+- จำนวนวันวิเคราะห์ตลาดและทดสอบแล็บสารเคลือบนาโน Self-Cleaning
+
+2. [Phase 2: Production Setup & Sourcing]
+- ระยะเวลาจัดซื้อเม็ดพลาสติกและสาร Hydro-Shield
+- ระยะเวลาปรับเครื่องจักรและผลิต Pilot Lot จนเข้าคลัง
+
+3. [Phase 3: The Liquidation Window]
+- คำนวณเวลารวม Phase 1 และ 2 เป็นจำนวนวัน/สัปดาห์
+- สรุปจำนวนวัน "Runway ในการระบายกระเป๋าสีดำ 4.2 ล้านบาท" ก่อนรุ่นใหม่เข้าคลัง
+
+Tone & Style: ภาษาไทย เน้นตัวเลขเชิงเหตุผล เพื่อระบุว่าต้องระบายของเก่าให้จบภายในกี่วัน` }
+  ]},
+  { num:"Lab 6.2", name:"Gems (Custom AI)", tag:"Tools", steps:[
+    { label:"สร้างผู้ช่วย AI เฉพาะทาง", prompt:`คุณคือ Lean Officer ของ บริษัท ABC (ผลิตกระเป๋าเดินทาง) เน้นแก้ปัญหาข้อมูลล่าช้าและงานซ้ำซ้อน ปัจจุบันพนักงานเสียเวลา 80% เตรียมข้อมูลจนรายงานล่าช้า หน้าที่คือจัดการคอขวดข้อมูลข้ามแผนกด้วยวิธีที่ปฏิบัติได้จริงและลดขั้นตอนทำมือ เงื่อนไข: ตอบภาษาไทย ที่กระชับ ตรงประเด็น เน้นแก้ปัญหา ยกตัวอย่างโรงงานกระเป๋าเสมอ ห้ามเสนอระบบแพงที่ติดตั้งเกิน 6 เดือน หรือใช้ศัพท์เทคนิคยากโดยไม่จำเป็น` }
+  ]},
+  { num:"Lab 6.3", name:"Guided Learning", tag:"Tools", steps:[
+    { label:"สร้างแผนการเรียนรู้", prompt:`ทำ Learning Plan AI 4 สัปดาห์ ให้พนักงาน ABC ทุกแผนก แก้โจทย์ "ลดเวลาเตรียมข้อมูล 80% เพื่อส่งรายงานเร็วขึ้น" เน้นฝึกปฏิบัติกับงานจริงรายสัปดาห์ วัดผลด้วย Quiz และผลงานสรุปข้อมูลจริงแทนทฤษฎี` }
+  ]},
+  { num:"Lab 7.1", name:"Create Photo", tag:"Creative", steps:[
+    { label:"สร้างภาพ ด้วย Nano Banana", prompt:`"จัดทำภาพ product photography แนว Action Shot สำหรับ กระเป๋าเดินทางสี Pink Pastel ของ บริษัท ABC เพื่อดึงดูด กลุ่มลูกค้าที่กังวลเรื่องรอยเปื้อนฝังลึก ให้สัมผัสถึงประสิทธิภาพการทำความสะอาดที่ง่ายดาย ได้ทันทีโดยไม่ต้องใช้คำอธิบาย
+
+องค์ประกอบหลักที่เน้น:
+- แสดงภาพ Splash of clean water ที่กำลังพุ่งเข้าปะทะพื้นผิวกระเป๋า
+- จินตภาพขณะน้ำไหลผ่าน: หยดน้ำต้องจับตัวเป็นก้อนกลมและกวาดเอาคราบสกปรกและรอยขูดขีดสีดำเข้มให้หลุดออกอย่างรวดเร็ว จนเห็นผิวสีชมพูทีีสะอาดอยู่เบื้องหลังมวลน้ำ (สื่อถึง Hydrophobic Cleaning Technology)
+
+Props: จัดวางในมุมสวนหรือพื้นที่กลางแจ้งรับแสงธรรมชาติ
+แสง: ใช้ Crisp natural sunlight สร้างประกายเงางามบนหยดน้ำให้ดูทรงพลัง
+สไตล์: ภาพลักษณ์ระดับ Premium เน้น 4K sharp focus แบบหยุดนิ่ง (Freeze-frame) เพื่อโชว์ดีเทลของคราบที่หลุดกระจาย"` }
+  ]},
+  { num:"Lab 7.2", name:"Create Music", tag:"Creative", steps:[
+    { label:"Prompt เดียว — ที่สื่อ brand identity", prompt:`สร้างดนตรีสำหรับ วิดีโอเปิดตัวสินค้ากระเป๋าเดินทางคอลเลกชันใหม่ ของ บริษัท ABC โจทย์: ดนตรีต้องทำให้ กลุ่มเป้าหมายที่เป็นนักท่องเที่ยวลุยๆ รู้สึกถึง ความตื่นเต้น การผจญภัย และพลังงานเชิงบวก Brand identity: Innovative, Adventurous, Reliable Mood: กระปรี้กระเปร่าและสร้างแรงบันดาลใจ Avoid: ดนตรีที่ช้า หม่นหมอง หรือเสียงเปียโนที่เศร้าเกินไป` }
+  ]},
+  { num:"Lab 8.1", name:"Gemini in Chrome", tag:"Integration", steps:[
+    { label:"ตั้งคำถามจาก website", prompt:`ช่วยวิเคราะห์จุดเด่น 3 ข้อที่ชัดเจนที่สุด และเสนอแนะแนวทางที่บริษัทกระเป๋าเดินทางจะนำไปเป็น Case Study ได้ ให้สรุปข้อความแบบ Bullet point` }
+  ]},
+  { num:"Lab 8.2", name:"NotebookLM", tag:"Integration", steps:[
+    { label:"เอกสารที่ต้อง Upload", prompt:`[เพิ่มไฟล์ตามที่เกี่ยวข้อง]` },
+    { label:"Prompt เดียว — สร้าง notebook", prompt:`คำถามที่ต้องการคำตอบจากเอกสารของเราเอง:
+1. จากข้อมูลทั้งหมด อะไรคือ [insight หลัก เช่น สาเหตุปัญหา / โอกาสที่ยังไม่ใช้]
+2. มีช่วงเวลา segment หรือ case ใดที่ [สิ่งที่ต้องการหา]
+3. [คำถามที่ 3]` }
+  ]}
+];
+
+const CATEGORIES = ["ทั้งหมด", ...new Set(DATA.map(d => d.tag))];
+
+function escapeHtml(str){
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// Highlight [placeholder] text inside prompts for display only
+function renderPromptHtml(text){
+  const escaped = escapeHtml(text);
+  return escaped.replace(/\[([^\]]+)\]/g, '<span class="ph">[$1]</span>');
+}
+
+function copyIcon(){
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`;
+}
+function checkIcon(){
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+}
+
+let activeFilter = "ทั้งหมด";
+
+function renderFilters(){
+  const el = document.getElementById('filters');
+  el.innerHTML = CATEGORIES.map(c =>
+    `<button class="chip ${c===activeFilter?'active':''}" data-cat="${escapeHtml(c)}">${escapeHtml(c)}</button>`
+  ).join('');
+  el.querySelectorAll('.chip').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      activeFilter = btn.getAttribute('data-cat');
+      renderFilters();
+      renderLabs();
+    });
+  });
+}
+
+function renderLabs(){
+  const el = document.getElementById('labs');
+  const list = activeFilter === "ทั้งหมด" ? DATA : DATA.filter(d => d.tag === activeFilter);
+  el.innerHTML = list.map((lab, li) => `
+    <div class="lab">
+      <div class="lab-head">
+        <div class="lab-titles">
+          <span class="lab-num">${escapeHtml(lab.num)}</span>
+          <span class="lab-name">${escapeHtml(lab.name)}</span>
+        </div>
+        <span class="lab-tag">${escapeHtml(lab.tag)}</span>
+      </div>
+      <div class="steps">
+        ${lab.steps.map((s, si) => `
+          <div class="step">
+            <div class="step-label">
+              <span class="step-label-text">${escapeHtml(s.label)}</span>
+              <button class="copy-btn" data-idx="${li}-${si}">${copyIcon()}<span>Copy</span></button>
+            </div>
+            <div class="prompt-box">${renderPromptHtml(s.prompt)}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+
+  el.querySelectorAll('.copy-btn').forEach(btn=>{
+    btn.addEventListener('click', async ()=>{
+      const [li, si] = btn.getAttribute('data-idx').split('-').map(Number);
+      const text = list[li].steps[si].prompt;
+      try{
+        await navigator.clipboard.writeText(text);
+      }catch(e){
+        const ta = document.createElement('textarea');
+        ta.value = text; document.body.appendChild(ta); ta.select();
+        document.execCommand('copy'); document.body.removeChild(ta);
+      }
+      const original = btn.innerHTML;
+      btn.classList.add('copied');
+      btn.innerHTML = `${checkIcon()}<span>Copied</span>`;
+      setTimeout(()=>{
+        btn.classList.remove('copied');
+        btn.innerHTML = original;
+      }, 1600);
+    });
+  });
+}
+
+renderFilters();
+renderLabs();
+</script>
+</body>
+</html>
